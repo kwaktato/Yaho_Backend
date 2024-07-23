@@ -48,9 +48,9 @@
 ### 동기화
 1. 원본 저장소의 변경 사항을 로컬 저장소와 개인 저장소에 반영
     ```bash
-    git checkout main
-    git pull upstream main
-    git push origin main
+    git checkout develop
+    git pull upstream develop
+    git push origin develop
     ```
 
 ### 커밋 메시지
