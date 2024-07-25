@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: yaho-db-01.cb4eo4a64jqk.ap-northeast-2.rds.amazonaws.com
+    url: yaho-dev-db.c5kimq6w0czs.ap-northeast-2.rds.amazonaws.com
     username: root
     password: Yyaho29627qlalfdldi!!
     driver-class-name: com.mysql.cj.jdbc.Driver
