@@ -1,12 +1,21 @@
 package com.example.yaho.domain;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
-@Entity
+import java.time.LocalDateTime;
+@Entity // JPA 엔티티임을 명시
+@Getter // lombok에서 제공
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "diary")
 public class Diary {
 
@@ -14,11 +23,12 @@ public class Diary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "id2", nullable = false)
-    private Long id2;
+    // game_id 와 중복
+//    @Column(name = "id2", nullable = false)
+//    private Long id2;
 
     @Column(length = 255)
-    private String date;
+    private LocalDate date;
 
     @Column(length = 255)
     private String emoticon;
@@ -38,5 +48,5 @@ public class Diary {
 
     @Column(name = "updated_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime updatedAt;
-    
+
 }
