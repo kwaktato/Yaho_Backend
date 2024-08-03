@@ -11,23 +11,10 @@ import lombok.*;
  public class LoginResponseDto {
     boolean loginSuccess;
     Member member;
-    AuthTokens token;
 
 
     public void setMembr(Member member) {
         this.member = member;
     }
 
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class AuthTokens {
-        String accessToken;
-        String refreshToken;
-        String grantType;
-        Long expiresIn;
-
-
-    }
 }

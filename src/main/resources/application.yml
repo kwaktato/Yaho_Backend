@@ -25,6 +25,6 @@ kakao:
   token_uri: https://kauth.kakao.com/oauth/token
   user_info_uri: https://kapi.kakao.com/v2/user/me
 
-custom:
-  jwt:
-    secretKey: erwqeafgrieibnxc34jidaldfkdmmckeijfekqiqjgiojgiqjdlkadjfio
+#custom:
+#  jwt:
+#    secretKey: erwqeafgrieibnxc34jidaldfkdmmckeijfekqiqjgiojgiqjdlkadjfio

@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import com.example.yaho.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,10 +38,10 @@ public class KakaoLoginController {
             @Parameter(name = "code", description = "인가 코드 입니다."),
     })
     @GetMapping("/kakao")
-    public ResponseEntity<LoginResponseDto> callback(@RequestParam("code") String code) {
+    public ApiResponse<LoginResponseDto> callback(@RequestParam("code") String code) {
 
         String accessToken = kakaoService.getKakaoAccessToken(code).getAccess_token();
-        ResponseEntity<LoginResponseDto> loginResponseDtoEntity = kakaoService.kakaoLogin(accessToken);
-        return loginResponseDtoEntity;
+        LoginResponseDto loginResponseDto = kakaoService.kakaoLogin(accessToken);
+        return ApiResponse.onSuccess(loginResponseDto);
     }
 }

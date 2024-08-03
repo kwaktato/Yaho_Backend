@@ -1,6 +1,7 @@
 package com.example.yaho.service.KakaoService;
 
 import com.example.yaho.domain.Member;
+import com.example.yaho.domain.enums.FairyGrade;
 import com.example.yaho.repository.MemberRepository;
 import com.example.yaho.web.dto.KakaoAccountDto;
 import com.example.yaho.web.dto.KakaoTokenDto;
@@ -29,8 +30,6 @@ import org.springframework.web.client.RestTemplate;
 public class KakaoService {
 
     private final MemberRepository memberRepository;
-    private final AuthTokensGenerator authTokensGenerator;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @Value("${kakao.client_id}")
     private String KAKAO_CLIENT_ID;
@@ -88,12 +87,12 @@ public class KakaoService {
         return kakaoTokenDto;
     }
 
-    public ResponseEntity<LoginResponseDto> kakaoLogin(String kakaoAccessToken) {
+    public LoginResponseDto kakaoLogin(String kakaoAccessToken) {
         Member member = getKakaoInfo(kakaoAccessToken);
 
         LoginResponseDto loginResponseDto = new LoginResponseDto();
         loginResponseDto.setLoginSuccess(true);
-        loginResponseDto.setMembr(member);
+        loginResponseDto.setMember(member);
 
         Member existOwner = memberRepository.findById(member.getId()).orElse(null);
         try {
@@ -103,21 +102,21 @@ public class KakaoService {
             }
             loginResponseDto.setLoginSuccess(true);
 
-            // 3. 로그인 JWT 토큰 발행
-            //토큰 생성
-            LoginResponseDto.AuthTokens token=authTokensGenerator.generate(member.getId().toString());
-            LoginResponseDto build = LoginResponseDto.builder()
-                    .loginSuccess(true)
-                    .member(member)
-                    .token(token)
-                    .build();
+//            // 3. 로그인 JWT 토큰 발행
+//            //토큰 생성
+//            LoginResponseDto.AuthTokens token=authTokensGenerator.generate(member.getId().toString());
+//            LoginResponseDto build = LoginResponseDto.builder()
+//                    .loginSuccess(true)
+//                    .member(member)
+//                    .token(token)
+//                    .build();
 
-            return ResponseEntity.ok(loginResponseDto);
+            return loginResponseDto;
 
 
         } catch (Exception e) {
             loginResponseDto.setLoginSuccess(false);
-            return ResponseEntity.badRequest().body(loginResponseDto);
+            return loginResponseDto;
         }
     }
 
@@ -160,6 +159,8 @@ public class KakaoService {
                     .email(kakaoAccountDto.getKakaoAccount().getEmail())
                     .nickname(kakaoAccountDto.getKakaoAccount().getProfile().getNickName())
                     .profileImage(kakaoAccountDto.getKakaoAccount().getProfile().getProfileImageUrl())
+                    .fairyGrade(existOwner.getFairyGrade())
+                    .field(existOwner.getField())
                     .build();
         }
         // 처음 로그인 하는 경우
@@ -169,6 +170,7 @@ public class KakaoService {
                     .email(kakaoAccountDto.getKakaoAccount().getEmail())
                     .nickname(kakaoAccountDto.getKakaoAccount().getProfile().getNickName())
                     .profileImage(kakaoAccountDto.getKakaoAccount().getProfile().getProfileImageUrl())
+                    .fairyGrade(FairyGrade.BRONZE)
                     .build();
         }
     }
