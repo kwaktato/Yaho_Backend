@@ -24,6 +24,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -48,6 +50,7 @@ public class KakaoService {
 
     //카카오 토근 가져오기
     @Transactional
+
     public KakaoTokenDto getKakaoAccessToken(String code) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -102,15 +105,6 @@ public class KakaoService {
             }
             loginResponseDto.setLoginSuccess(true);
 
-//            // 3. 로그인 JWT 토큰 발행
-//            //토큰 생성
-//            LoginResponseDto.AuthTokens token=authTokensGenerator.generate(member.getId().toString());
-//            LoginResponseDto build = LoginResponseDto.builder()
-//                    .loginSuccess(true)
-//                    .member(member)
-//                    .token(token)
-//                    .build();
-
             return loginResponseDto;
 
 
@@ -161,6 +155,8 @@ public class KakaoService {
                     .profileImage(kakaoAccountDto.getKakaoAccount().getProfile().getProfileImageUrl())
                     .fairyGrade(existOwner.getFairyGrade())
                     .field(existOwner.getField())
+                    .createdAt(existOwner.getCreatedAt())
+                    .updatedAt(existOwner.getUpdatedAt())
                     .build();
         }
         // 처음 로그인 하는 경우
@@ -171,6 +167,8 @@ public class KakaoService {
                     .nickname(kakaoAccountDto.getKakaoAccount().getProfile().getNickName())
                     .profileImage(kakaoAccountDto.getKakaoAccount().getProfile().getProfileImageUrl())
                     .fairyGrade(FairyGrade.BRONZE)
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
                     .build();
         }
     }

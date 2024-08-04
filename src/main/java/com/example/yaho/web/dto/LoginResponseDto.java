@@ -13,7 +13,7 @@ import lombok.*;
     Member member;
 
 
-    public void setMembr(Member member) {
+    public void setMember(Member member) {
         this.member = member;
     }
 
