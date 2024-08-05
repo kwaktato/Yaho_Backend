@@ -17,3 +17,10 @@ spring:
         hbm2ddl:
           auto: update
         default_batch_fetch_size: 1000
+
+kakao:
+  client_id: 3fe9748de9767b5649437add91e54655
+  redirect_uri: http://localhost:5173/oauth/callback/kakao
+  client_secret: XUrvKHSPQqGQmWqGWYoGcvEhS4rM9IT6
+  token_uri: https://kauth.kakao.com/oauth/token
+  user_info_uri: https://kapi.kakao.com/v2/user/me
