@@ -27,6 +27,11 @@ public class Diary {
 //    @Column(name = "id2", nullable = false)
 //    private Long id2;
 
+    // location 추가
+    @Column(length = 30)
+    private String location;
+
+
     @Column(length = 255)
     private LocalDate date;
 

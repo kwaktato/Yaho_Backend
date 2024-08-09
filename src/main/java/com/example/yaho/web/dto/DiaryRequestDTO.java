@@ -16,6 +16,14 @@ public class DiaryRequestDTO {
         String mvp;
         String content;
         String imageUrl;
+        // location 추가
+        String location;
+    }
+
+    @Getter
+    public static class GetDto{
+        @NotNull
+        LocalDate date;
     }
 
 }
