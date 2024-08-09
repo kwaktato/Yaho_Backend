@@ -33,11 +33,14 @@ public class Member extends BaseEntity {
     @Column(name = "profile_image", length = 255)
     private String profileImage;
 
-    @Column(name = "Field", length = 255)
-    private String field;
+    @Column(name = "password", length = 255)
+    private String password;
 
     @Enumerated(EnumType.STRING)
     private FairyGrade fairyGrade;
+
+    @Column(name = "favorite_team", length = 20)
+    private String favoriteTeam;
 
     @Column(name = "created_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime createdAt;
