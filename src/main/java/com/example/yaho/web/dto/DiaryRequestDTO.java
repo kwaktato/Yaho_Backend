@@ -15,6 +15,7 @@ public class DiaryRequestDTO {
         // mvp를 사용자가 선택??
         String mvp;
         String content;
+        String imageUrl;
     }
 
 }

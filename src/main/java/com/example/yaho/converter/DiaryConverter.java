@@ -23,6 +23,7 @@ public class DiaryConverter {
                 .date(request.getDate())
                 .emoticon(request.getEmoticon())
                 .mvp(request.getMvp())  // 수정 가능성
+                .imageUrl(request.getImageUrl()) // 이미지 추가
                 .content(request.getContent())
                 .game(game) // Set the Game entity
                 .createdAt(now) // Set the created timestamp
