@@ -1,9 +1,12 @@
 package com.example.yaho.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.List;
 @Entity
+@Getter
 @Table(name = "game")
 public class Game {
 
@@ -11,8 +14,9 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 255)
-    private String date;
+    // 날짜 형식 포맷팅을 위한 수정
+    @Column(name = "date", columnDefinition = "DATE")
+    private LocalDate date;
 
     @Column(name = "team_1", length = 30)
     private String team1;
