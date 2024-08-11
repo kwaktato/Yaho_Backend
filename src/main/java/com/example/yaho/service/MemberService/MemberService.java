@@ -20,10 +20,12 @@ public class MemberService {
 
         Member member = memberRepository.findByNickname(memberName).orElseThrow(()->{throw new IllegalArgumentException("멤버없음");});
 
+        Long memberId = member.getId();
         String nickname = member.getNickname();
         String profileImgUrl = member.getProfileImage();
 
         return MemberResponseDTO.memberProfileDTO.builder()
+                .memberId(memberId)
                 .nickName(nickname)
                 .profileImgUrl(profileImgUrl)
                 .build();
