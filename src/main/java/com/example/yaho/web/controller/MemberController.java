@@ -28,7 +28,6 @@ public class MemberController {
     public ApiResponse<MemberResponseDTO.memberProfileDTO> getMemberProfile() {
 
         String memberName = SecurityUtil.getCurrentUserName();
-        System.out.println("memberName = " + memberName);
         MemberResponseDTO.memberProfileDTO response = memberService.getMemberProfile(memberName);
         return ApiResponse.onSuccess(response);
     }

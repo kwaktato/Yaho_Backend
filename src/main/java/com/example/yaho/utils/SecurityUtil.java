@@ -22,7 +22,6 @@ public class SecurityUtil {
         if (authentication == null || authentication.getName() == null) {
             return null;
         }
-        System.out.println("authentication = " + authentication.getName());
         return authentication.getName();
     }
 }
