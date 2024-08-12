@@ -31,7 +31,7 @@ public class Diary {
     private LocalDate date;
 
     @Column(length = 255)
-    private String emoticon;
+    private String emotionImageUrl;
 
     @Column(length = 255)
     private String mvp;
@@ -39,7 +39,7 @@ public class Diary {
     @Column(length = 255)
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id") // 외래 키로 사용할 컬럼 이름
     private Game game; // Game 참조
 

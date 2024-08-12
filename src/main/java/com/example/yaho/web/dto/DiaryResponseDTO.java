@@ -13,4 +13,13 @@ public class DiaryResponseDTO {
         Long diaryId;
         LocalDateTime createdAt;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class EmotionResultDTO{
+        String emotionImageUrl;
+        String FavoriteClubImageUrl;
+    }
 }

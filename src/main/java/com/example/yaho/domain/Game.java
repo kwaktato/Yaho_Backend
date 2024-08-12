@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Getter
@@ -27,6 +28,6 @@ public class Game {
     @Column(length = 30)
     private String location;
 
-    @OneToMany(mappedBy = "game") // Diary 엔티티에서 game 매핑됨
-    private List<Diary> diaries; // Diary 리스트
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL) // Diary 엔티티에서 game 매핑됨
+    private List<Diary> diaries = new ArrayList<>(); // Diary 리스트
 }

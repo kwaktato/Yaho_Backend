@@ -17,4 +17,11 @@ public class DiaryRequestDTO {
         String content;
     }
 
+    @Getter
+    public static class EmotionDto{
+
+        @NotNull
+        Integer emotionImage;
+    }
+
 }
