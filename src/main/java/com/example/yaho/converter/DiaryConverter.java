@@ -24,7 +24,7 @@ public class DiaryConverter {
                 .location(request.getLocation())
                 .emoticon(request.getEmoticon())
                 .mvp(request.getMvp())  // 수정 가능성
-                .imageUrl(request.getImageUrl()) // 이미지 추가
+//                .imageUrl(request.getImageUrl()) // 이미지 추가
                 .content(request.getContent())
                 .game(game) // Set the Game entity
                 .createdAt(now) // Set the created timestamp
