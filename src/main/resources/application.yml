@@ -30,7 +30,7 @@ cloud:
     s3:
       bucket: yahobucket
       path:
-        mvp : mvp
+        mvp : mvps
     region:
       static: ap-northeast-2
     stack:
