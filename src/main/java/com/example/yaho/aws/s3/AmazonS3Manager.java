@@ -25,6 +25,9 @@ public class AmazonS3Manager{
     private final UuidRepository uuidRepository;
 
     public String uploadFile(String keyName, MultipartFile file){
+        String originalFilename = file.getOriginalFilename(); //원본 파일 명
+        String extention = originalFilename.substring(originalFilename.lastIndexOf("."));
+
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());
         metadata.setContentType(file.getContentType());
@@ -34,7 +37,7 @@ public class AmazonS3Manager{
             log.error("error at AmazonS3Manager uploadFile : {}", (Object) e.getStackTrace());
         }
 
-        return amazonS3.getUrl(amazonConfig.getBucket(), keyName).toString();
+        return amazonS3.getUrl(amazonConfig.getBucket(), keyName+extention).toString();
     }
 
     public String generateMvpKeyName(Uuid uuid) {

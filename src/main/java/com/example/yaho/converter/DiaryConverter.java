@@ -29,12 +29,4 @@ public class DiaryConverter {
                 .updatedAt(now) // Set the updated timestamp
                 .build();
     }
-
-//    public static MvpImage toMvpImage(String pictureUrl, Diary newDiary) {
-//
-//        return MvpImage.builder()
-//                .url(pictureUrl)
-//                .diary(newDiary)
-//                .build();
-//    }
 }
