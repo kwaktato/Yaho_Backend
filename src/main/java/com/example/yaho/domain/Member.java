@@ -2,6 +2,7 @@ package com.example.yaho.domain;
 
 import com.example.yaho.domain.common.BaseEntity;
 import com.example.yaho.domain.enums.FairyGrade;
+import com.example.yaho.domain.enums.FavoriteTeam;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -36,11 +37,12 @@ public class Member extends BaseEntity {
     @Column(name = "password", length = 255)
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private FairyGrade fairyGrade;
+//    @Enumerated(EnumType.STRING)
+//    private FairyGrade fairyGrade;
 
-    @Column(name = "favorite_team", length = 20)
-    private String favoriteTeam;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "favorite_team")
+    private FavoriteTeam favoriteTeam;
 
     @Column(name = "created_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime createdAt;
