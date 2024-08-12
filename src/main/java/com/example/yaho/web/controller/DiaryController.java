@@ -31,7 +31,7 @@ public class DiaryController {
     }
 
     @Operation(summary = "일기 쓰기 API", description = "작성한 일기를 저장하는 API입니다.")
-    @PostMapping("/{gameId}/write")
+    @PostMapping(value = "/{gameId}/write", consumes = "multipart/form-data")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!", content = @Content),
@@ -43,7 +43,7 @@ public class DiaryController {
     })
     public ApiResponse<DiaryResponseDTO.WriteResultDto> write(
             @PathVariable(name = "gameId") Long gameId,
-            @RequestBody @Valid DiaryRequestDTO.WriteDto request) {
+            @ModelAttribute @Valid DiaryRequestDTO.WriteDto request) {
         // 서비스 호출하여 일기 저장
         Diary diary = diaryCommandService.writeDiary(gameId, request);
         return ApiResponse.onSuccess(DiaryConverter.toWriteResultDTO(diary));

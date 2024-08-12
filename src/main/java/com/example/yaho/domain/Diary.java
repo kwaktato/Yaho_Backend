@@ -11,9 +11,15 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity // JPA 엔티티임을 명시
 @Getter // lombok에서 제공
+@Setter
 @Builder
+@DynamicUpdate
+@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "diary")
@@ -49,6 +55,8 @@ public class Diary {
     @ManyToOne
     @JoinColumn(name = "game_id") // 외래 키로 사용할 컬럼 이름
     private Game game; // Game 참조
+
+    private String mvpImageUrl;
 
     @Column(name = "created_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime createdAt;
