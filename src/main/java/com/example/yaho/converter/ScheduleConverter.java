@@ -3,8 +3,6 @@ package com.example.yaho.converter;
 import com.example.yaho.domain.Game;
 import com.example.yaho.web.dto.ScheduleResponseDTO;
 
-import java.time.format.DateTimeFormatter;
-
 public class ScheduleConverter {
 
     public static ScheduleResponseDTO.ScheduleDto toScheduleDto(Game game) {
@@ -18,6 +16,7 @@ public class ScheduleConverter {
                 .team1(game.getTeam1())
                 .team2(game.getTeam2())
                 .location(game.getLocation())
+                .time(game.getTime())
                 .build();
     }
 }

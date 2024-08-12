@@ -27,6 +27,9 @@ public class Game {
     @Column(length = 30)
     private String location;
 
+    @Column(length = 30)
+    private String time;
+
     @OneToMany(mappedBy = "game") // Diary 엔티티에서 game 매핑됨
     private List<Diary> diaries; // Diary 리스트
 }
