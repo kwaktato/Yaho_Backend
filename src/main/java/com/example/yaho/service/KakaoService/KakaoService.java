@@ -153,7 +153,7 @@ public class KakaoService {
                     .email(kakaoAccountDto.getKakaoAccount().getEmail())
                     .nickname(kakaoAccountDto.getKakaoAccount().getProfile().getNickName())
                     .profileImage(kakaoAccountDto.getKakaoAccount().getProfile().getProfileImageUrl())
-                    .fairyGrade(existOwner.getFairyGrade())
+//                    .fairyGrade(existOwner.getFairyGrade())
                     .field(existOwner.getField())
                     .createdAt(existOwner.getCreatedAt())
                     .updatedAt(existOwner.getUpdatedAt())
@@ -166,7 +166,7 @@ public class KakaoService {
                     .email(kakaoAccountDto.getKakaoAccount().getEmail())
                     .nickname(kakaoAccountDto.getKakaoAccount().getProfile().getNickName())
                     .profileImage(kakaoAccountDto.getKakaoAccount().getProfile().getProfileImageUrl())
-                    .fairyGrade(FairyGrade.BRONZE)
+//                    .fairyGrade(FairyGrade.BRONZE)
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
                     .build();
