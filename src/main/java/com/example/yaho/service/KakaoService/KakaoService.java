@@ -154,7 +154,7 @@ public class KakaoService {
                     .nickname(kakaoAccountDto.getKakaoAccount().getProfile().getNickName())
                     .profileImage(kakaoAccountDto.getKakaoAccount().getProfile().getProfileImageUrl())
 //                    .fairyGrade(existOwner.getFairyGrade())
-                    .field(existOwner.getField())
+                    .password(existOwner.getPassword())
                     .createdAt(existOwner.getCreatedAt())
                     .updatedAt(existOwner.getUpdatedAt())
                     .build();
