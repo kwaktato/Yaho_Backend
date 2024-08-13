@@ -1,5 +1,6 @@
 package com.example.yaho.web.dto;
 
+import com.example.yaho.domain.enums.FavoriteTeam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,5 +16,6 @@ public class MemberResponseDTO {
         private Long memberId;
         private String nickName;
         private String profileImgUrl;
+        private FavoriteTeam favoriteTeam;
     }
 }
