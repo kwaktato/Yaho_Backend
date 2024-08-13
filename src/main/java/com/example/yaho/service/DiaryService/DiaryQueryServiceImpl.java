@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,9 +30,12 @@ public class DiaryQueryServiceImpl implements DiaryQueryService{
 
     @Override
     @Transactional
-    public Diary getDiary(DiaryRequestDTO.GetDto request) {
+    public Diary getDiary(LocalDate date) {
 
-        return diaryRepository.findByDate(request.getDate());
+        Diary diary = diaryRepository.findByDate(date)
+                .orElseThrow(() -> new RuntimeException("Diary not found"));
+
+        return diary;
     }
 
     @Override
@@ -39,7 +43,7 @@ public class DiaryQueryServiceImpl implements DiaryQueryService{
     public Diary modifyDiary(DiaryRequestDTO.ModifyDto request) {
         // Retrieve the diary based on the date and location provided in the request
         Game game = gameRepository.findByDateAndLocation(request.getDate(), request.getLocation())
-                .orElseThrow(() -> new GameIdHandler(ErrorStatus.GAME_ID_NOT_FOUND));
+                .orElseThrow(() -> new RuntimeException("Game not found"));
 
         Diary diary = diaryRepository.findByGame(game).orElseThrow(() -> new GameIdHandler(ErrorStatus.GAME_ID_NOT_FOUND));
 

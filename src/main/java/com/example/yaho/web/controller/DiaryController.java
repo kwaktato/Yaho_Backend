@@ -14,7 +14,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/diarys")
@@ -54,14 +57,12 @@ public class DiaryController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료", content = @Content),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함", content = @Content),
     })
-
-    public ApiResponse<DiaryResponseDTO.GetResultDto> write(
-            @RequestBody @Valid DiaryRequestDTO.GetDto request
-    ) {
-        // 서비스 호출하여 일기 조회
-        Diary diary = diaryQueryService.getDiary(request);
+    public ApiResponse<DiaryResponseDTO.GetResultDto> get(
+            @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+        Diary diary = diaryQueryService.getDiary(date);
         return ApiResponse.onSuccess(DiaryConverter.toGetResultDTO(diary));
     }
+
 
 
     @Operation(summary = "일기 수정 API", description = "작성한 일기를 수정하는 API입니다.")

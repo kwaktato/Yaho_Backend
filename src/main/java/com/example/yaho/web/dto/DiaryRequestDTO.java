@@ -29,14 +29,16 @@ public class DiaryRequestDTO {
     }
 
     @Getter
+    @Setter
     public static class GetDto{
         @NotNull
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
         LocalDate date;
     }
 
     @Setter
     @Getter
-    public class ModifyDto {
+    public static class ModifyDto {
         @NotNull
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         LocalDate date;

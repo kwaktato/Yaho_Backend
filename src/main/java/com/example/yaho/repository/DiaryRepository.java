@@ -8,6 +8,6 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
-    Diary findByDate(LocalDate date);
+    Optional<Diary> findByDate(LocalDate date);
     Optional<Diary> findByGame(Game game);
 }
