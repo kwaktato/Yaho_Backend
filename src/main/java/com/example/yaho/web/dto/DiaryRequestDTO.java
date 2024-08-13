@@ -34,4 +34,19 @@ public class DiaryRequestDTO {
         LocalDate date;
     }
 
+    @Setter
+    @Getter
+    public class ModifyDto {
+        @NotNull
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
+        LocalDate date;
+        @NotNull
+        String emoticon;
+        // mvp를 사용자가 선택??
+        String mvp;
+        String content;
+        MultipartFile mvpPicture;
+        @NotNull
+        String location;
+    }
 }

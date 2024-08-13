@@ -5,4 +5,6 @@ import com.example.yaho.web.dto.DiaryRequestDTO;
 
 public interface DiaryQueryService {
     Diary getDiary(DiaryRequestDTO.GetDto request);
+
+    Diary modifyDiary(DiaryRequestDTO.ModifyDto request);
 }

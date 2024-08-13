@@ -28,8 +28,8 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
 
     @Override
     @Transactional
-    public Diary writeDiary(Long gameId, DiaryRequestDTO.WriteDto request) {
-        Game game = gameRepository.findById(gameId)
+    public Diary writeDiary(DiaryRequestDTO.WriteDto request) {
+        Game game = gameRepository.findByDateAndLocation(request.getDate(), request.getLocation())
                 .orElseThrow(() -> new GameIdHandler(ErrorStatus.GAME_ID_NOT_FOUND));
 
         Diary newDiary = DiaryConverter.toDiary(request, game);

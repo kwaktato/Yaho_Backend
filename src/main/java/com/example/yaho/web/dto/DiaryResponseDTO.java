@@ -27,6 +27,16 @@ public class DiaryResponseDTO {
         // mvp를 사용자가 선택??
         String mvp;
         String content;
-//        String imageUrl;
+        String mvpImageUrl;
+    }
+
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ModifyResultDto {
+        Long diaryId;
+        LocalDateTime updatedAt;
     }
 }

@@ -31,27 +31,23 @@ public class DiaryController {
     }
 
     @Operation(summary = "일기 쓰기 API", description = "작성한 일기를 저장하는 API입니다.")
-    @PostMapping(value = "/{gameId}/write", consumes = "multipart/form-data")
+    @PostMapping(value = "/write", consumes = "multipart/form-data")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!", content = @Content),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료", content = @Content),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함", content = @Content),
     })
-    @Parameters({
-            @Parameter(name = "gameId", description = "경기의 아이디, path variable 입니다!")
-    })
     public ApiResponse<DiaryResponseDTO.WriteResultDto> write(
-            @PathVariable(name = "gameId") Long gameId,
             @ModelAttribute @Valid DiaryRequestDTO.WriteDto request) {
         // 서비스 호출하여 일기 저장
-        Diary diary = diaryCommandService.writeDiary(gameId, request);
+        Diary diary = diaryCommandService.writeDiary(request);
         return ApiResponse.onSuccess(DiaryConverter.toWriteResultDTO(diary));
     }
 
 
     @Operation(summary = "일기 확인 API", description = "작성한 일기를 확인하는 API입니다.")
-    @PostMapping("/get")
+    @GetMapping("/get")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!", content = @Content),
@@ -62,8 +58,25 @@ public class DiaryController {
     public ApiResponse<DiaryResponseDTO.GetResultDto> write(
             @RequestBody @Valid DiaryRequestDTO.GetDto request
     ) {
-        // 서비스 호출하여 일기 저장
+        // 서비스 호출하여 일기 조회
         Diary diary = diaryQueryService.getDiary(request);
         return ApiResponse.onSuccess(DiaryConverter.toGetResultDTO(diary));
+    }
+
+
+    @Operation(summary = "일기 수정 API", description = "작성한 일기를 수정하는 API입니다.")
+    @PatchMapping(value = "/modify", consumes = "multipart/form-data")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!", content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료", content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함", content = @Content),
+    })
+
+    public ApiResponse<DiaryResponseDTO.ModifyResultDto> modify(
+            @ModelAttribute @Valid DiaryRequestDTO.ModifyDto request) {
+        // 서비스 호출하여 일기 저장
+        Diary diary = diaryQueryService.modifyDiary(request);
+        return ApiResponse.onSuccess(DiaryConverter.toModifyResultDTO(diary));
     }
 }

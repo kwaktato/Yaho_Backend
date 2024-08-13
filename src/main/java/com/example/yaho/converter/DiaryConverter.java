@@ -24,7 +24,6 @@ public class DiaryConverter {
                 .location(request.getLocation())
                 .emoticon(request.getEmoticon())
                 .mvp(request.getMvp())  // 수정 가능성
-//                .imageUrl(request.getImageUrl()) // 이미지 추가
                 .content(request.getContent())
                 .game(game) // Set the Game entity
                 .createdAt(now) // Set the created timestamp
@@ -35,9 +34,29 @@ public class DiaryConverter {
     public static DiaryResponseDTO.GetResultDto toGetResultDTO(Diary diary) {
         return DiaryResponseDTO.GetResultDto.builder()
                 .mvp(diary.getMvp())
+                .mvpImageUrl(diary.getMvpImageUrl())
                 .location(diary.getLocation())
                 .content(diary.getContent())
                 .emoticon(diary.getEmoticon())
                 .build();
+    }
+
+    public static DiaryResponseDTO.ModifyResultDto toModifyResultDTO(Diary diary) {
+        return DiaryResponseDTO.ModifyResultDto.builder()
+                .diaryId(diary.getId())
+                .updatedAt(diary.getUpdatedAt()) // Use the createdAt from the Diary object
+                .build();
+    }
+
+    public static Diary modifyDiary(DiaryRequestDTO.ModifyDto request, Diary diary) {
+        LocalDateTime now = LocalDateTime.now();
+        diary.setContent(request.getContent());
+        diary.setMvp(request.getMvp());
+        diary.setEmoticon(request.getEmoticon());
+        diary.setUpdatedAt(now);
+        diary.setLocation(request.getLocation());
+        diary.setDate(request.getDate());
+
+        return diary;
     }
 }
