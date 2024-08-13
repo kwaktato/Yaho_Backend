@@ -6,9 +6,11 @@ import com.example.yaho.aws.s3.AmazonS3Manager;
 import com.example.yaho.converter.DiaryConverter;
 import com.example.yaho.domain.Diary;
 import com.example.yaho.domain.Game;
+import com.example.yaho.domain.Member;
 import com.example.yaho.domain.Uuid;
 import com.example.yaho.repository.DiaryRepository;
 import com.example.yaho.repository.GameRepository;
+import com.example.yaho.repository.MemberRepository;
 import com.example.yaho.repository.UuidRepository;
 import com.example.yaho.web.dto.DiaryRequestDTO;
 import jakarta.transaction.Transactional;
@@ -25,14 +27,19 @@ public class DiaryQueryServiceImpl implements DiaryQueryService{
 
     private final DiaryRepository diaryRepository;
     private final GameRepository gameRepository;
+    private final MemberRepository memberRepository;
     private final AmazonS3Manager s3Manager;
     private final UuidRepository uuidRepository;
 
     @Override
     @Transactional
-    public Diary getDiary(LocalDate date) {
+    public Diary getDiary(Long memberId, LocalDate date) {
 
-        Diary diary = diaryRepository.findByDate(date)
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+
+
+        Diary diary = diaryRepository.findByDateAndMember(date, member)
                 .orElseThrow(() -> new RuntimeException("Diary not found"));
 
         return diary;
@@ -40,12 +47,16 @@ public class DiaryQueryServiceImpl implements DiaryQueryService{
 
     @Override
     @Transactional
-    public Diary modifyDiary(DiaryRequestDTO.ModifyDto request) {
+    public Diary modifyDiary(Long memberId, DiaryRequestDTO.ModifyDto request) {
         // Retrieve the diary based on the date and location provided in the request
         Game game = gameRepository.findByDateAndLocation(request.getDate(), request.getLocation())
                 .orElseThrow(() -> new RuntimeException("Game not found"));
 
-        Diary diary = diaryRepository.findByGame(game).orElseThrow(() -> new GameIdHandler(ErrorStatus.GAME_ID_NOT_FOUND));
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+
+
+        Diary diary = diaryRepository.findByGameAndMember(game, member).orElseThrow(() -> new GameIdHandler(ErrorStatus.GAME_ID_NOT_FOUND));
 
 
         // Modify the diary using the converter

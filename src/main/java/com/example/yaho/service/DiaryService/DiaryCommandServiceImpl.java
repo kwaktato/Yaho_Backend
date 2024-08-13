@@ -6,9 +6,11 @@ import com.example.yaho.aws.s3.AmazonS3Manager;
 import com.example.yaho.converter.DiaryConverter;
 import com.example.yaho.domain.Diary;
 import com.example.yaho.domain.Game;
+import com.example.yaho.domain.Member;
 import com.example.yaho.domain.Uuid;
 import com.example.yaho.repository.DiaryRepository;
 import com.example.yaho.repository.GameRepository;
+import com.example.yaho.repository.MemberRepository;
 import com.example.yaho.repository.UuidRepository;
 import com.example.yaho.web.dto.DiaryRequestDTO;
 import jakarta.transaction.Transactional;
@@ -23,16 +25,21 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
 
     private final DiaryRepository diaryRepository;
     private final GameRepository gameRepository;
+    private final MemberRepository memberRepository;
     private final AmazonS3Manager s3Manager;
     private final UuidRepository uuidRepository;
 
     @Override
     @Transactional
-    public Diary writeDiary(DiaryRequestDTO.WriteDto request) {
+    public Diary writeDiary(Long memberId, DiaryRequestDTO.WriteDto request) {
         Game game = gameRepository.findByDateAndLocation(request.getDate(), request.getLocation())
                 .orElseThrow(() -> new GameIdHandler(ErrorStatus.GAME_ID_NOT_FOUND));
 
-        Diary newDiary = DiaryConverter.toDiary(request, game);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+
+
+        Diary newDiary = DiaryConverter.toDiary(request, game, member);
 
         if (request.getMvpPicture() != null) {
             String uuid = UUID.randomUUID().toString();

@@ -34,50 +34,62 @@ public class DiaryController {
     }
 
     @Operation(summary = "일기 쓰기 API", description = "작성한 일기를 저장하는 API입니다.")
-    @PostMapping(value = "/write", consumes = "multipart/form-data")
+    @PostMapping(value = "/{memberId}/write", consumes = "multipart/form-data")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!", content = @Content),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료", content = @Content),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함", content = @Content),
     })
+    @Parameters({
+            @Parameter(name = "memberId", description = "사용자의 아이디, path variable 입니다!")
+    })
     public ApiResponse<DiaryResponseDTO.WriteResultDto> write(
-            @ModelAttribute @Valid DiaryRequestDTO.WriteDto request) {
+            @PathVariable(name = "memberId") Long memberId,
+        @ModelAttribute @Valid DiaryRequestDTO.WriteDto request) {
         // 서비스 호출하여 일기 저장
-        Diary diary = diaryCommandService.writeDiary(request);
+        Diary diary = diaryCommandService.writeDiary(memberId, request);
         return ApiResponse.onSuccess(DiaryConverter.toWriteResultDTO(diary));
     }
 
 
     @Operation(summary = "일기 확인 API", description = "작성한 일기를 확인하는 API입니다.")
-    @GetMapping("/get")
+    @GetMapping("/{memberId}/get")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!", content = @Content),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료", content = @Content),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함", content = @Content),
     })
+    @Parameters({
+            @Parameter(name = "memberId", description = "사용자의 아이디, path variable 입니다!")
+    })
     public ApiResponse<DiaryResponseDTO.GetResultDto> get(
+            @PathVariable(name = "memberId") Long memberId,
             @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
-        Diary diary = diaryQueryService.getDiary(date);
+        Diary diary = diaryQueryService.getDiary(memberId, date);
         return ApiResponse.onSuccess(DiaryConverter.toGetResultDTO(diary));
     }
 
 
 
     @Operation(summary = "일기 수정 API", description = "작성한 일기를 수정하는 API입니다.")
-    @PatchMapping(value = "/modify", consumes = "multipart/form-data")
+    @PatchMapping(value = "/{memberId}/modify", consumes = "multipart/form-data")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!", content = @Content),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료", content = @Content),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함", content = @Content),
     })
+    @Parameters({
+            @Parameter(name = "memberId", description = "사용자의 아이디, path variable 입니다!")
+    })
 
     public ApiResponse<DiaryResponseDTO.ModifyResultDto> modify(
+            @PathVariable(name = "memberId") Long memberId,
             @ModelAttribute @Valid DiaryRequestDTO.ModifyDto request) {
         // 서비스 호출하여 일기 저장
-        Diary diary = diaryQueryService.modifyDiary(request);
+        Diary diary = diaryQueryService.modifyDiary(memberId, request);
         return ApiResponse.onSuccess(DiaryConverter.toModifyResultDTO(diary));
     }
 }

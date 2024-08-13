@@ -2,6 +2,7 @@ package com.example.yaho.converter;
 
 import com.example.yaho.domain.Diary;
 import com.example.yaho.domain.Game;
+import com.example.yaho.domain.Member;
 import com.example.yaho.web.dto.DiaryRequestDTO;
 import com.example.yaho.web.dto.DiaryResponseDTO;
 
@@ -16,10 +17,11 @@ public class DiaryConverter {
                 .build();
     }
 
-    public static Diary toDiary(DiaryRequestDTO.WriteDto request, Game game) {
+    public static Diary toDiary(DiaryRequestDTO.WriteDto request, Game game, Member member) {
         LocalDateTime now = LocalDateTime.now();
 
         return Diary.builder()
+                .member(member)
                 .date(request.getDate())
                 .location(request.getLocation())
                 .emoticon(request.getEmoticon())
