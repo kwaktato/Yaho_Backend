@@ -22,6 +22,7 @@ import static org.apache.tomcat.util.http.fileupload.FileUploadBase.MULTIPART_FO
 @RequiredArgsConstructor
 @RequestMapping("/members")
 public class MemberController {
+
     private final MemberService memberService;
     private final MemberRepository memberRepository;
 
@@ -81,5 +82,19 @@ public class MemberController {
         MemberResponseDTO.ProfileImgDTO response = memberService.updateProfileImg(updateImg, memberId);
 
         return ApiResponse.onSuccess(response);
+    }
+
+    @GetMapping("/check/nickname")
+    @Operation(summary = "닉네임 중복 확인 API",
+            description = "중복되는 닉네임이 있는지 확인하는 API입니다. 이미 존재하는 닉네임이라면 true를, 아니라면 false를 반환합니다")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!", content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료", content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함", content = @Content),
+    })
+    public ApiResponse<Boolean> checkNickname(@RequestParam String nickname) {
+        Boolean isExist = memberService.checkNicknameExists(nickname);
+        return ApiResponse.onSuccess(isExist);
     }
 }

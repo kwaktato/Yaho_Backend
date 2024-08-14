@@ -32,7 +32,6 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
-        Long id = member.getId();
         String nickname = member.getNickname();
         String profileImgUrl = member.getProfileImage();
         FavoriteTeam favoriteTeam = member.getFavoriteTeam();
@@ -81,5 +80,13 @@ public class MemberService {
                 .memberId(memberId)
                 .profileImgURL(imgURL)
                 .build();
+    }
+
+    /**
+     * 닉네임 중복 확인
+     */
+    public boolean checkNicknameExists(String nickname) {
+        boolean isExist = memberRepository.existsByNickname(nickname);
+        return isExist;
     }
 }
