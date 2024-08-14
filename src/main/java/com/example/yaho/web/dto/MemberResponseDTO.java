@@ -13,9 +13,17 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class memberProfileDTO {
-        private Long memberId;
-        private String nickName;
+        private String nickname;
         private String profileImgUrl;
         private FavoriteTeam favoriteTeam;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ProfileImgDTO{
+        private Long memberId;
+        private String profileImgURL;
     }
 }

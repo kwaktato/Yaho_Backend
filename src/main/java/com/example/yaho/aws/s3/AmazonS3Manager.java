@@ -44,4 +44,7 @@ public class AmazonS3Manager{
         return amazonConfig.getMvpPath() + '/' + uuid.getUuid();
     }
 
+    public String generateProfileImgName(Uuid uuid) {
+        return amazonConfig.getProfileImg() + '/' + uuid.getUuid();
+    }
 }
