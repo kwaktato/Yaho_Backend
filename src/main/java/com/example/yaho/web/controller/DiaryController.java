@@ -13,9 +13,13 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.StringMultipartFileEditor;
 
 import java.time.LocalDate;
 
@@ -25,6 +29,12 @@ public class DiaryController {
 
     private final DiaryCommandService diaryCommandService;
     private final DiaryQueryService diaryQueryService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        // 빈 문자열을 null로 변환
+        binder.registerCustomEditor(MultipartFile.class, new StringMultipartFileEditor());
+    }
 
     // Constructor-based injection
     @Autowired
@@ -45,9 +55,27 @@ public class DiaryController {
             @Parameter(name = "memberId", description = "사용자의 아이디, path variable 입니다!")
     })
     public ApiResponse<DiaryResponseDTO.WriteResultDto> write(
-            @PathVariable(name = "memberId") Long memberId,
-        @ModelAttribute @Valid DiaryRequestDTO.WriteDto request) {
-        // 서비스 호출하여 일기 저장
+            @PathVariable(name = "memberId") @NotNull Long memberId,
+            @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") @NotNull LocalDate date,
+            @RequestParam("emoticon") @NotNull String emoticon,
+            @RequestParam(value = "mvp", required = false) String mvp,
+            @RequestParam(value = "content", required = false) String content,
+            @RequestParam(value = "mvpPicture", required = false) MultipartFile mvpPicture,
+            @RequestParam("location") @NotNull String location) {
+
+        DiaryRequestDTO.WriteDto request = new DiaryRequestDTO.WriteDto();
+        request.setDate(date);
+        request.setEmoticon(emoticon);
+        request.setMvp(mvp);
+        request.setContent(content);
+        request.setMvpPicture(mvpPicture); // MultipartFile 처리
+        request.setLocation(location);
+
+        // 빈 파일이 전달된 경우, null로 처리
+        if (request.getMvpPicture() != null && request.getMvpPicture().isEmpty()) {
+            request.setMvpPicture(null);
+        }
+
         Diary diary = diaryCommandService.writeDiary(memberId, request);
         return ApiResponse.onSuccess(DiaryConverter.toWriteResultDTO(diary));
     }
@@ -86,8 +114,27 @@ public class DiaryController {
     })
 
     public ApiResponse<DiaryResponseDTO.ModifyResultDto> modify(
-            @PathVariable(name = "memberId") Long memberId,
-            @ModelAttribute @Valid DiaryRequestDTO.ModifyDto request) {
+            @PathVariable(name = "memberId") @NotNull Long memberId,
+            @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") @NotNull LocalDate date,
+            @RequestParam("emoticon") @NotNull String emoticon,
+            @RequestParam(value = "mvp", required = false) String mvp,
+            @RequestParam(value = "content", required = false) String content,
+            @RequestParam(value = "mvpPicture", required = false) MultipartFile mvpPicture,
+            @RequestParam("location") @NotNull String location) {
+
+        DiaryRequestDTO.ModifyDto request = new DiaryRequestDTO.ModifyDto();
+        request.setDate(date);
+        request.setEmoticon(emoticon);
+        request.setMvp(mvp);
+        request.setContent(content);
+        request.setMvpPicture(mvpPicture); // MultipartFile 처리
+        request.setLocation(location);
+
+        // 빈 파일이 전달된 경우, null로 처리
+        if (request.getMvpPicture() != null && request.getMvpPicture().isEmpty()) {
+            request.setMvpPicture(null);
+        }
+
         // 서비스 호출하여 일기 저장
         Diary diary = diaryQueryService.modifyDiary(memberId, request);
         return ApiResponse.onSuccess(DiaryConverter.toModifyResultDTO(diary));

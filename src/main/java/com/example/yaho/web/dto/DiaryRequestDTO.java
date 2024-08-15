@@ -1,8 +1,11 @@
 package com.example.yaho.web.dto;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +28,7 @@ public class DiaryRequestDTO {
 
         MultipartFile mvpPicture;
 
+        @NotNull
         String location;
     }
 
@@ -47,6 +51,7 @@ public class DiaryRequestDTO {
         // mvp를 사용자가 선택??
         String mvp;
         String content;
+
         MultipartFile mvpPicture;
         @NotNull
         String location;
