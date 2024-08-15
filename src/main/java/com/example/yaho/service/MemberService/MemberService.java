@@ -4,9 +4,11 @@ import com.example.yaho.apiPayload.code.status.ErrorStatus;
 import com.example.yaho.apiPayload.exception.handler.MemberHandler;
 import com.example.yaho.aws.s3.AmazonS3Manager;
 import com.example.yaho.converter.MemberConverter;
+import com.example.yaho.domain.Diary;
 import com.example.yaho.domain.Member;
 import com.example.yaho.domain.Uuid;
 import com.example.yaho.domain.enums.FavoriteTeam;
+import com.example.yaho.repository.DiaryRepository;
 import com.example.yaho.repository.MemberRepository;
 
 import com.example.yaho.repository.UuidRepository;
@@ -16,6 +18,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -24,6 +28,7 @@ import java.util.UUID;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final DiaryRepository diaryRepository;
 
     /**
      * 프로필 조회
@@ -88,5 +93,20 @@ public class MemberService {
     public boolean checkNicknameExists(String nickname) {
         boolean isExist = memberRepository.existsByNickname(nickname);
         return isExist;
+    }
+
+    public MemberResponseDTO.mypageDiaryListDTO getMemberDiaryList(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+        List<Diary> diaryList = diaryRepository.findTop9ByMember_IdOrderByDateDesc(memberId);
+
+        List<MemberResponseDTO.mypageDiaryDTO> mypageDiaryDTOList = diaryList.stream()
+                .map(diary -> MemberConverter.toDiaryDTO(diary))
+                .toList();
+
+        return MemberResponseDTO.mypageDiaryListDTO.builder()
+                .diaryList(mypageDiaryDTOList)
+                .build();
     }
 }

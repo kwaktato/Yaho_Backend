@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.List;
+
 public class MemberResponseDTO {
 
     @Builder
@@ -25,5 +28,24 @@ public class MemberResponseDTO {
     public static class ProfileImgDTO{
         private Long memberId;
         private String profileImgURL;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class mypageDiaryDTO { // 마이 페이지 중 일기 내용 DTO
+        String emotion;
+        String content;
+        String location;
+        LocalDate date;
+        String mvp;
+    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class mypageDiaryListDTO {
+        private List<mypageDiaryDTO> diaryList;
     }
 }

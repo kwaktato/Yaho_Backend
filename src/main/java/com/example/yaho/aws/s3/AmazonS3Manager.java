@@ -24,7 +24,7 @@ public class AmazonS3Manager{
 
     private final UuidRepository uuidRepository;
 
-    public String uploadFile(String keyName, MultipartFile file){
+    public String uploadFile(String keyName, MultipartFile file) {
         String originalFilename = file.getOriginalFilename(); //원본 파일 명
         String extention = originalFilename.substring(originalFilename.lastIndexOf("."));
 
@@ -33,7 +33,7 @@ public class AmazonS3Manager{
         metadata.setContentType(file.getContentType());
         try {
             amazonS3.putObject(new PutObjectRequest(amazonConfig.getBucket(), keyName, file.getInputStream(), metadata));
-        }catch (IOException e){
+        } catch (IOException e){
             log.error("error at AmazonS3Manager uploadFile : {}", (Object) e.getStackTrace());
         }
 
