@@ -31,6 +31,7 @@ cloud:
       bucket: yahobucket
       path:
         mvp : mvps
+        profileImg : profileImg
     region:
       static: ap-northeast-2
     stack:
