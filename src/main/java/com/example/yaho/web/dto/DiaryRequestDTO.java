@@ -1,5 +1,6 @@
 package com.example.yaho.web.dto;
 
+import com.example.yaho.validation.annotation.CheckEmotion;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,7 @@ public class DiaryRequestDTO {
     public static class EmotionDto{
 
         @NotNull
+        @CheckEmotion
         Integer emotionImage;
     }
 

@@ -18,7 +18,10 @@ public enum ErrorStatus implements BaseErrorCode {
 
 
     // Game 오류
-    GAME_ID_NOT_FOUND(HttpStatus.FORBIDDEN, "GAME4001", "게임이 없습니다.");
+    GAME_ID_NOT_FOUND(HttpStatus.FORBIDDEN, "GAME4001", "게임이 없습니다."),
+
+    // Emotion 오류
+    EMOTION_NOT_FOUND(HttpStatus.NOT_FOUND, "EMOTION4001", "해당 이모티콘이 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

@@ -19,7 +19,7 @@ public class DiaryQueryServiceImpl implements DiaryQueryService{
 
         String emotionImageUrl = "";
 
-        switch (request.getEmotionImage()) {
+        switch (request.getEmotionImage().intValue()) {
             case 1:
                 emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/1.png";
                 break;

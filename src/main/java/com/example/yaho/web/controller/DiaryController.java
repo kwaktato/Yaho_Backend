@@ -54,7 +54,7 @@ public class DiaryController {
         return ApiResponse.onSuccess(DiaryConverter.toWriteResultDTO(diary));
     }
 
-    @GetMapping("/{memberId}/emotion")
+    @PostMapping("/{memberId}/emotion")
     @Operation(summary = "특정 멤버의 이모티콘 이미지, 구단 로고 조회 API",description = "이모티콘은 1~9 까지의 숫자를 입력하면 해당 이미지가 Response 되도록 구현했습니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
