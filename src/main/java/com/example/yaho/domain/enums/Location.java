@@ -1,0 +1,12 @@
+package com.example.yaho.domain.enums;
+
+public enum Location {
+    GOCHEOK_SKY_DOME,
+    KIA_CHAMPIONS_FIELD,
+    DAEGU_SAMSUNG_LIONS_PARK,
+    SAJIK_BASEBALL_STADIUM,
+    SUWON_KT_WIZ_PARK,
+    INCHEON_SSG_LANDERS_FIELD,
+    JAMSIL_BASEBALL_STADIUM,
+    CHANGWON_NC_PARK
+}

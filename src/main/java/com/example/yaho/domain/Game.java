@@ -1,5 +1,6 @@
 package com.example.yaho.domain;
 
+import com.example.yaho.domain.enums.Location;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -24,8 +25,9 @@ public class Game {
     @Column(name = "team_2", length = 30)
     private String team2;
 
-    @Column(length = 30)
-    private String location;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "location")
+    private Location location;
 
     @Column(length = 30)
     private String time;

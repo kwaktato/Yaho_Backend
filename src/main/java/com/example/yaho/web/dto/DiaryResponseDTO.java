@@ -1,5 +1,6 @@
 package com.example.yaho.web.dto;
 
+import com.example.yaho.domain.enums.Location;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -23,7 +24,7 @@ public class DiaryResponseDTO {
     public static class GetResultDto{
         @NotNull
         String emoticon;
-        String location;
+        Integer location;
         // mvp를 사용자가 선택??
         String mvp;
         String content;

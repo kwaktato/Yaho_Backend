@@ -29,7 +29,7 @@ public class DiaryRequestDTO {
         MultipartFile mvpPicture;
 
         @NotNull
-        String location;
+        Integer location;
     }
 
     @Getter
@@ -54,6 +54,6 @@ public class DiaryRequestDTO {
 
         MultipartFile mvpPicture;
         @NotNull
-        String location;
+        Integer location;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.yaho.web.dto;
 
+import com.example.yaho.domain.enums.Location;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class ScheduleResponseDTO {
         LocalDate date;
         String team1;
         String team2;
-        String location;
+        Location location;
         String time;
     }
 }

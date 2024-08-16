@@ -8,6 +8,7 @@ import com.example.yaho.domain.Diary;
 import com.example.yaho.domain.Game;
 import com.example.yaho.domain.Member;
 import com.example.yaho.domain.Uuid;
+import com.example.yaho.domain.enums.Location;
 import com.example.yaho.repository.DiaryRepository;
 import com.example.yaho.repository.GameRepository;
 import com.example.yaho.repository.MemberRepository;
@@ -32,7 +33,8 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
     @Override
     @Transactional
     public Diary writeDiary(Long memberId, DiaryRequestDTO.WriteDto request) {
-        Game game = gameRepository.findByDateAndLocation(request.getDate(), request.getLocation())
+
+        Game game = gameRepository.findByDateAndLocation(request.getDate(), getLocationFromRequest(request.getLocation()))
                 .orElseThrow(() -> new GameIdHandler(ErrorStatus.GAME_ID_NOT_FOUND));
 
         Member member = memberRepository.findById(memberId)
@@ -52,5 +54,28 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
         }
 
         return diaryRepository.save(newDiary);
+    }
+
+    private static Location getLocationFromRequest(int locationCode) {
+        switch (locationCode) {
+            case 1:
+                return Location.GOCHEOK_SKY_DOME;
+            case 2:
+                return Location.KIA_CHAMPIONS_FIELD;
+            case 3:
+                return Location.DAEGU_SAMSUNG_LIONS_PARK;
+            case 4:
+                return Location.SAJIK_BASEBALL_STADIUM;
+            case 5:
+                return Location.SUWON_KT_WIZ_PARK;
+            case 6:
+                return Location.INCHEON_SSG_LANDERS_FIELD;
+            case 7:
+                return Location.JAMSIL_BASEBALL_STADIUM;
+            case 8:
+                return Location.CHANGWON_NC_PARK;
+            default:
+                throw new IllegalArgumentException("Invalid location code: " + locationCode);
+        }
     }
 }
