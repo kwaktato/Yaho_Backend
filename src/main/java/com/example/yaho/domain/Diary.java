@@ -1,5 +1,6 @@
 package com.example.yaho.domain;
 
+import com.example.yaho.domain.enums.Location;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -34,8 +35,9 @@ public class Diary {
 //    private Long id2;
 
     // location 추가
-    @Column(length = 30)
-    private String location;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "location")
+    private Location location;
 
 
     @Column(length = 255)

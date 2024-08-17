@@ -52,7 +52,8 @@ public class DiaryController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함", content = @Content),
     })
     @Parameters({
-            @Parameter(name = "memberId", description = "사용자의 아이디, path variable 입니다!")
+            @Parameter(name = "memberId", description = "사용자의 아이디, path variable 입니다!"),
+            @Parameter(name = "location", description = "일기 작성 위치 코드입니다. Figma 기준 순서대로 1~8이며, 1이 고척 스카이돔, 8이 창원 NC파크입니다.")
     })
     public ApiResponse<DiaryResponseDTO.WriteResultDto> write(
             @PathVariable(name = "memberId") @NotNull Long memberId,
@@ -61,7 +62,7 @@ public class DiaryController {
             @RequestParam(value = "mvp", required = false) String mvp,
             @RequestParam(value = "content", required = false) String content,
             @RequestParam(value = "mvpPicture", required = false) MultipartFile mvpPicture,
-            @RequestParam("location") @NotNull String location) {
+            @RequestParam("location") @NotNull Integer location) {
 
         DiaryRequestDTO.WriteDto request = new DiaryRequestDTO.WriteDto();
         request.setDate(date);
@@ -99,8 +100,6 @@ public class DiaryController {
         return ApiResponse.onSuccess(DiaryConverter.toGetResultDTO(diary));
     }
 
-
-
     @Operation(summary = "일기 수정 API", description = "작성한 일기를 수정하는 API입니다.")
     @PatchMapping(value = "/{memberId}/modify", consumes = "multipart/form-data")
     @ApiResponses({
@@ -110,9 +109,9 @@ public class DiaryController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함", content = @Content),
     })
     @Parameters({
-            @Parameter(name = "memberId", description = "사용자의 아이디, path variable 입니다!")
+            @Parameter(name = "memberId", description = "사용자의 아이디, path variable 입니다!"),
+            @Parameter(name = "location", description = "일기 작성 위치 코드입니다. Figma 기준 순서대로 1~8이며, 1이 고척 스카이돔, 8이 창원 NC파크입니다.")
     })
-
     public ApiResponse<DiaryResponseDTO.ModifyResultDto> modify(
             @PathVariable(name = "memberId") @NotNull Long memberId,
             @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") @NotNull LocalDate date,
@@ -120,7 +119,7 @@ public class DiaryController {
             @RequestParam(value = "mvp", required = false) String mvp,
             @RequestParam(value = "content", required = false) String content,
             @RequestParam(value = "mvpPicture", required = false) MultipartFile mvpPicture,
-            @RequestParam("location") @NotNull String location) {
+            @RequestParam("location") @NotNull Integer location) {
 
         DiaryRequestDTO.ModifyDto request = new DiaryRequestDTO.ModifyDto();
         request.setDate(date);
