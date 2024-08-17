@@ -7,5 +7,6 @@ import jakarta.transaction.Transactional;
 public interface DiaryCommandService {
 
     @Transactional
-    Diary writeDiary(Long gameId, DiaryRequestDTO.WriteDto request);
+    Diary writeDiary(Long memberId, DiaryRequestDTO.WriteDto request);
+
 }

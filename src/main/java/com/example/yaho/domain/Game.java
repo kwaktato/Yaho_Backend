@@ -1,5 +1,6 @@
 package com.example.yaho.domain;
 
+import com.example.yaho.domain.enums.Location;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -25,8 +26,9 @@ public class Game {
     @Column(name = "team_2", length = 30)
     private String team2;
 
-    @Column(length = 30)
-    private String location;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "location")
+    private Location location;
 
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL) // Diary 엔티티에서 game 매핑됨
