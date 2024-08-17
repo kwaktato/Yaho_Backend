@@ -14,10 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
@@ -173,5 +170,28 @@ public class KakaoService {
         }
     }
 
+    // 카카오 로그아웃
+    public void kakaoLogout(String kakaoAccessToken) {
+        RestTemplate rt = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + kakaoAccessToken);
+
+        HttpEntity<MultiValueMap<String, String>> logoutRequest = new HttpEntity<>(headers);
+
+        // POST 방식으로 카카오 로그아웃 API 호출
+        ResponseEntity<String> response = rt.exchange(
+                "https://kapi.kakao.com/v1/user/logout",
+                HttpMethod.POST,
+                logoutRequest,
+                String.class
+        );
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            log.info("카카오 로그아웃 성공");
+        } else {
+            log.error("카카오 로그아웃 실패: " + response.getBody());
+        }
+    }
 
 }
