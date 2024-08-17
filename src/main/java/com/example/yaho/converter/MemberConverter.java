@@ -12,14 +12,14 @@ public class MemberConverter {
 
         return MemberResponseDTO.memberProfileDTO.builder()
                 .nickname(member.getNickname())
-                .favoriteTeam(member.getFavoriteTeam())
+                .favoriteClub(member.getFavoriteClub())
                 .build();
     }
 
     public static MemberResponseDTO.mypageDiaryDTO toDiaryDTO(Diary diary) {
 
         return MemberResponseDTO.mypageDiaryDTO.builder()
-                .emotion(diary.getEmoticon())
+                .emotionImageUrl(diary.getEmotionImageUrl())
                 .content(diary.getContent())
                 .location(diary.getLocation())
                 .date(diary.getDate())
