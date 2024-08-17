@@ -16,9 +16,11 @@ public enum ErrorStatus implements BaseErrorCode {
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED,"COMMON401","인증이 필요합니다."),
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
-
     // Game 오류
-    GAME_ID_NOT_FOUND(HttpStatus.FORBIDDEN, "GAME4001", "게임이 없습니다.");
+    GAME_ID_NOT_FOUND(HttpStatus.FORBIDDEN, "GAME4001", "게임이 없습니다."),
+
+    // Member 없음 오류
+    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다");
 
     private final HttpStatus httpStatus;
     private final String code;
