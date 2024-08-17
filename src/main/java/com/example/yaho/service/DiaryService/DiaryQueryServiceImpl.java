@@ -7,12 +7,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.yaho.domain.Diary;
+import com.example.yaho.repository.DiaryRepository;
+import lombok.RequiredArgsConstructor;
+
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class DiaryQueryServiceImpl implements DiaryQueryService{
 
     private final MemberRepository memberRepository;
+   private final DiaryRepository diaryRepository;
 
     @Override
     public String getEmotionImageUrl(DiaryRequestDTO.EmotionDto request) {
@@ -92,6 +98,13 @@ public class DiaryQueryServiceImpl implements DiaryQueryService{
         }
         return favoriteClubImageUrl;
 
+    }
+  
+  @Override
+    @Transactional
+    public Diary getDiary(DiaryRequestDTO.GetDto request) {
+
+        return diaryRepository.findByDate(request.getDate());
     }
 
 

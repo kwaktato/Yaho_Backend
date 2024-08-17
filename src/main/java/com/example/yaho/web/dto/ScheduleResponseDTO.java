@@ -14,10 +14,10 @@ public class ScheduleResponseDTO {
     @AllArgsConstructor
     public static class ScheduleDto {
         Long gameId;
-        // String date;
         LocalDate date;
         String team1;
         String team2;
         String location;
+        String time;
     }
 }

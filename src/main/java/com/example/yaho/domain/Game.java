@@ -28,6 +28,12 @@ public class Game {
     @Column(length = 30)
     private String location;
 
+
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL) // Diary 엔티티에서 game 매핑됨
     private List<Diary> diaries = new ArrayList<>(); // Diary 리스트
+
+    @Column(length = 30)
+    private String time;
+
+  
 }

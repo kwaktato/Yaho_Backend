@@ -22,7 +22,9 @@ public class DiaryConverter {
         return Diary.builder()
                 .date(request.getDate())
                 .emotionImageUrl(request.getEmoticon())
+                .location(request.getLocation())
                 .mvp(request.getMvp())  // 수정 가능성
+//                .imageUrl(request.getImageUrl()) // 이미지 추가
                 .content(request.getContent())
                 .game(game) // Set the Game entity
                 .createdAt(now) // Set the created timestamp
@@ -30,11 +32,21 @@ public class DiaryConverter {
                 .build();
     }
 
+
     public static DiaryResponseDTO.EmotionResultDTO toEmotionResultDTO(String emotionImageUrl, String favoriteClubImageUrl){
 
         return DiaryResponseDTO.EmotionResultDTO.builder()
                 .emotionImageUrl(emotionImageUrl)
                 .FavoriteClubImageUrl(favoriteClubImageUrl)
+                .build();
+}
+  
+    public static DiaryResponseDTO.GetResultDto toGetResultDTO(Diary diary) {
+        return DiaryResponseDTO.GetResultDto.builder()
+                .mvp(diary.getMvp())
+                .location(diary.getLocation())
+                .content(diary.getContent())
+                .emoticon(diary.getEmoticon())
                 .build();
     }
 }

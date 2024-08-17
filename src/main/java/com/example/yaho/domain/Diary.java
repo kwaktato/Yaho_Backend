@@ -33,6 +33,11 @@ public class Diary {
 //    @Column(name = "id2", nullable = false)
 //    private Long id2;
 
+    // location 추가
+    @Column(length = 30)
+    private String location;
+
+
     @Column(length = 255)
     private LocalDate date;
 
@@ -42,10 +47,9 @@ public class Diary {
     @Column(length = 255)
     private String mvp;
 
-    @Column(length = 255)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "game_id") // 외래 키로 사용할 컬럼 이름
     private Game game; // Game 참조
 

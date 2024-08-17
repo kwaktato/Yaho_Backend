@@ -25,6 +25,14 @@ public class DiaryRequestDTO {
         String content;
 
         MultipartFile mvpPicture;
+
+        String location;
+    }
+
+    @Getter
+    public static class GetDto{
+        @NotNull
+        LocalDate date;
     }
 
     @Getter

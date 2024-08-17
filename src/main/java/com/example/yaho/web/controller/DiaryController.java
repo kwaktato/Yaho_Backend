@@ -54,6 +54,7 @@ public class DiaryController {
         return ApiResponse.onSuccess(DiaryConverter.toWriteResultDTO(diary));
     }
 
+
     @PostMapping("/{memberId}/emotion")
     @Operation(summary = "특정 멤버의 이모티콘 이미지, 구단 로고 조회 API",description = "이모티콘은 1~9 까지의 숫자를 입력하면 해당 이미지가 Response 되도록 구현했습니다.")
     @ApiResponses({
@@ -71,5 +72,21 @@ public class DiaryController {
         return ApiResponse.onSuccess(DiaryConverter.toEmotionResultDTO(emotionImageUrl, favoriteClubImageUrl));
     }
 
+
+    @Operation(summary = "일기 확인 API", description = "작성한 일기를 확인하는 API입니다.")
+    @PostMapping("/get")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!", content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료", content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함", content = @Content),
+    })
+    public ApiResponse<DiaryResponseDTO.GetResultDto> write(
+            @RequestBody @Valid DiaryRequestDTO.GetDto request
+    ) {
+        // 서비스 호출하여 일기 저장
+        Diary diary = diaryQueryService.getDiary(request);
+        return ApiResponse.onSuccess(DiaryConverter.toGetResultDTO(diary));
+    }
 
 }
