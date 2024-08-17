@@ -50,11 +50,11 @@ public class DiaryController {
     }
 
     // Constructor-based injection
-    @Autowired
-    public DiaryController(DiaryCommandService diaryCommandService, DiaryQueryService diaryQueryService) {
-        this.diaryCommandService = diaryCommandService;
-        this.diaryQueryService = diaryQueryService;
-    }
+//    @Autowired
+//    public DiaryController(DiaryCommandService diaryCommandService, DiaryQueryService diaryQueryService) {
+//        this.diaryCommandService = diaryCommandService;
+//        this.diaryQueryService = diaryQueryService;
+//    }
 
 
     @Operation(summary = "일기 쓰기 API", description = "작성한 일기를 저장하는 API입니다.")
@@ -80,7 +80,7 @@ public class DiaryController {
 
         DiaryRequestDTO.WriteDto request = new DiaryRequestDTO.WriteDto();
         request.setDate(date);
-        request.setEmoticon(emoticon);
+        request.setEmotionImageUrl(emoticon);
         request.setMvp(mvp);
         request.setContent(content);
         request.setMvpPicture(mvpPicture); // MultipartFile 처리
@@ -156,7 +156,7 @@ public class DiaryController {
 
         DiaryRequestDTO.ModifyDto request = new DiaryRequestDTO.ModifyDto();
         request.setDate(date);
-        request.setEmoticon(emoticon);
+        request.setEmotionImageUrl(emoticon);
         request.setMvp(mvp);
         request.setContent(content);
         request.setMvpPicture(mvpPicture); // MultipartFile 처리

@@ -25,10 +25,14 @@ public class DiaryResponseDTO {
         String emotionImageUrl;
         String FavoriteClubImageUrl;
     }
-  
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class GetResultDto{
         @NotNull
-        String emoticon;
+        String emotionImageUrl;
         Integer location;
         // mvp를 사용자가 선택??
         String mvp;

@@ -21,7 +21,7 @@ public class DiaryRequestDTO {
         LocalDate date;
 
         @NotNull
-        String emoticon;
+        String emotionImageUrl;
         // mvp를 사용자가 선택??
         String mvp;
 
@@ -58,7 +58,7 @@ public class DiaryRequestDTO {
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         LocalDate date;
         @NotNull
-        String emoticon;
+        String emotionImageUrl;
         // mvp를 사용자가 선택??
         String mvp;
         String content;
