@@ -10,6 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -49,5 +50,8 @@ public class Member extends BaseEntity {
 
     @Column(name = "updated_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "member") // Diary 엔티티에서 member 매핑됨
+    private List<Diary> diaries; // Diary 리스트
 
 }
