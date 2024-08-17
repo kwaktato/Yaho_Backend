@@ -12,6 +12,8 @@ import org.hibernate.annotations.DynamicUpdate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 
 @Entity
 @Getter
@@ -52,6 +54,7 @@ public class Member extends BaseEntity {
     @Column(name = "updated_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime updatedAt;
 
+
     // 멤버의 프로필 수정(닉네임, 최애구단)
     public void update(MemberUpdateDTO memberUpdateDTO) {
         this.nickname = memberUpdateDTO.getNickname();
@@ -62,4 +65,7 @@ public class Member extends BaseEntity {
     public void updateProfileImg(String profileImg){
         this.profileImage = profileImg;
     }
+    @OneToMany(mappedBy = "member") // Diary 엔티티에서 member 매핑됨
+    private List<Diary> diaries; // Diary 리스트
+
 }
