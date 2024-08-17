@@ -26,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -121,7 +122,7 @@ public class DiaryQueryServiceImpl implements DiaryQueryService{
 
     }
   
-  @Override
+    @Override
     @Transactional
     public Diary getDiary(Long memberId, LocalDate date) {
 
@@ -154,15 +155,38 @@ public class DiaryQueryServiceImpl implements DiaryQueryService{
         diary = DiaryConverter.modifyDiary(request, diary);
         diary.setGame(game);
 
+
+        // Save and return the updated diary
+        return diaryRepository.save(diary);
+    }
+
+    @Transactional
+    @Override
+    public Diary updateMvpImg(DiaryRequestDTO.MvpImageDto image, Long memberId, LocalDate date, Integer location) {
+        // Retrieve the diary based on the date and location provided in the request
+        Game game = gameRepository.findByDateAndLocation(date, getLocationFromRequest(location))
+                .orElseThrow(() -> new RuntimeException("Game not found"));
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+
+
+        Diary diary = diaryRepository.findByGameAndMember(game, member).orElseThrow(() -> new GameIdHandler(ErrorStatus.GAME_ID_NOT_FOUND));
+
+
         // If there's an MVP picture, upload it to S3 and update the diary
-        if (request.getMvpPicture() != null) {
+        if (image.getMvpPicture() != null) {
             String uuid = UUID.randomUUID().toString();
             Uuid savedUuid = uuidRepository.save(Uuid.builder()
                     .uuid(uuid).build());
 
             // Generate the S3 key and upload the file
-            String pictureUrl = s3Manager.uploadFile(s3Manager.generateMvpKeyName(savedUuid), request.getMvpPicture());
-            diary.setMvpImageUrl(pictureUrl);
+            String pictureUrl = s3Manager.uploadFile(s3Manager.generateMvpKeyName(savedUuid), image.getMvpPicture());
+            System.out.println("Uploaded Image URL: " + pictureUrl); // 로그로 출력
+
+            diary = DiaryConverter.updateMvpImage(diary, pictureUrl);
+            System.out.println("Diary after image update: " + diary.getMvpImageUrl()); // 로그로 출력
+
         }
 
         // Save and return the updated diary

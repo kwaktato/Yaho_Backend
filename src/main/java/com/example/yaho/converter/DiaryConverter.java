@@ -123,4 +123,20 @@ public class DiaryConverter {
                 throw new IllegalArgumentException("Unknown location: " + location);
         }
     }
+
+
+
+    public static DiaryResponseDTO.MvpImageResultDto toImageResultDTO(Diary diary) {
+        return DiaryResponseDTO.MvpImageResultDto.builder()
+                .diaryId(diary.getId())
+                .updatedAt(diary.getUpdatedAt())
+                .build();
+    }
+
+    public static Diary updateMvpImage(Diary diary, String pictureUrl) {
+        diary.setMvpImageUrl(pictureUrl);
+        diary.setUpdatedAt(LocalDateTime.now());
+
+        return diary;
+    }
 }

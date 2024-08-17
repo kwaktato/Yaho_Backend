@@ -18,4 +18,6 @@ public interface DiaryQueryService {
     Diary getDiary(Long memberId, LocalDate date);
 
     Diary modifyDiary(Long memberId, DiaryRequestDTO.ModifyDto request);
+
+    Diary updateMvpImg(DiaryRequestDTO.MvpImageDto image, Long memberId, LocalDate date, Integer location);
 }

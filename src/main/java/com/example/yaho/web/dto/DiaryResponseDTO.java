@@ -49,4 +49,14 @@ public class DiaryResponseDTO {
         Long diaryId;
         LocalDateTime updatedAt;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MvpImageResultDto{
+        Long diaryId;
+        LocalDateTime updatedAt;
+    }
+
 }

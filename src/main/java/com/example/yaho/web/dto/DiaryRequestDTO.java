@@ -27,7 +27,7 @@ public class DiaryRequestDTO {
 
         String content;
 
-        MultipartFile mvpPicture;
+//        MultipartFile mvpPicture;
 
         @NotNull
         Integer location;
@@ -63,9 +63,16 @@ public class DiaryRequestDTO {
         String mvp;
         String content;
 
-        MultipartFile mvpPicture;
+//        MultipartFile mvpPicture;
         @NotNull
         Integer location;
+    }
+
+    @Getter
+    @Setter
+    public static class MvpImageDto{
+
+        MultipartFile mvpPicture;
     }
 
 }
