@@ -1,7 +1,8 @@
 package com.example.yaho.domain;
 
 import com.example.yaho.domain.common.BaseEntity;
-import com.example.yaho.domain.enums.FavoriteTeam;
+import com.example.yaho.domain.enums.FairyGrade;
+import com.example.yaho.domain.enums.FavoriteClub;
 import com.example.yaho.web.dto.MemberUpdateDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -41,12 +42,10 @@ public class Member extends BaseEntity {
     @Column(name = "password", length = 255)
     private String password;
 
-//    @Enumerated(EnumType.STRING)
-//    private FairyGrade fairyGrade;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "favorite_team")
-    private FavoriteTeam favoriteTeam;
+    private FavoriteClub favoriteClub;
+
 
     @Column(name = "created_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime createdAt;

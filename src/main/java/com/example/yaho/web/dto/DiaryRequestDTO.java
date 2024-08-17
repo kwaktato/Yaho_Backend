@@ -1,5 +1,6 @@
 package com.example.yaho.web.dto;
 
+import com.example.yaho.validation.annotation.CheckEmotion;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
@@ -40,6 +41,16 @@ public class DiaryRequestDTO {
         LocalDate date;
     }
 
+
+    @Getter
+    public static class EmotionDto{
+
+        @NotNull
+        @CheckEmotion
+        Integer emotionImage;
+    }
+
+
     @Setter
     @Getter
     public static class ModifyDto {
@@ -56,4 +67,5 @@ public class DiaryRequestDTO {
         @NotNull
         Integer location;
     }
+
 }

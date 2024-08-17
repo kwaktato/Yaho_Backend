@@ -44,15 +44,12 @@ public class Diary {
     private LocalDate date;
 
     @Column(length = 255)
-    private String emoticon;
+    private String emotionImageUrl;
 
     @Column(length = 255)
     private String mvp;
 
     private String content;
-
-    // 이미지 추가
-    // private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "game_id") // 외래 키로 사용할 컬럼 이름

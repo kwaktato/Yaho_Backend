@@ -26,8 +26,8 @@ public class DiaryConverter {
         return Diary.builder()
                 .member(member)
                 .date(request.getDate())
+                .emotionImageUrl(request.getEmoticon())
                 .location(location)
-                .emoticon(request.getEmoticon())
                 .mvp(request.getMvp())  // 수정 가능성
                 .content(request.getContent())
                 .game(game)
@@ -36,6 +36,15 @@ public class DiaryConverter {
                 .build();
     }
 
+
+    public static DiaryResponseDTO.EmotionResultDTO toEmotionResultDTO(String emotionImageUrl, String favoriteClubImageUrl){
+
+        return DiaryResponseDTO.EmotionResultDTO.builder()
+                .emotionImageUrl(emotionImageUrl)
+                .FavoriteClubImageUrl(favoriteClubImageUrl)
+                .build();
+}
+  
     public static DiaryResponseDTO.GetResultDto toGetResultDTO(Diary diary) {
         return DiaryResponseDTO.GetResultDto.builder()
                 .mvp(diary.getMvp())
