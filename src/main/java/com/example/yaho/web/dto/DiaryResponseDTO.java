@@ -25,7 +25,11 @@ public class DiaryResponseDTO {
         String emotionImageUrl;
         String FavoriteClubImageUrl;
     }
-  
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class GetResultDto{
         @NotNull
         String emoticon;

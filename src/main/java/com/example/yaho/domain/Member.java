@@ -57,7 +57,7 @@ public class Member extends BaseEntity {
     // 멤버의 프로필 수정(닉네임, 최애구단)
     public void update(MemberUpdateDTO memberUpdateDTO) {
         this.nickname = memberUpdateDTO.getNickname();
-        this.favoriteTeam = memberUpdateDTO.getFavoriteTeam();
+        this.favoriteClub = memberUpdateDTO.getFavoriteTeam();
     }
 
     // 멤버의 프로필 이미지 수정

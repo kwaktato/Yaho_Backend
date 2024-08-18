@@ -43,6 +43,7 @@ public class DiaryRequestDTO {
 
 
     @Getter
+    @Setter
     public static class EmotionDto{
 
         @NotNull
