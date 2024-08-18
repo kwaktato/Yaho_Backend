@@ -7,7 +7,7 @@ import com.example.yaho.converter.MemberConverter;
 import com.example.yaho.domain.Diary;
 import com.example.yaho.domain.Member;
 import com.example.yaho.domain.Uuid;
-import com.example.yaho.domain.enums.FavoriteTeam;
+import com.example.yaho.domain.enums.FavoriteClub;
 import com.example.yaho.repository.DiaryRepository;
 import com.example.yaho.repository.MemberRepository;
 
@@ -18,7 +18,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,12 +38,12 @@ public class MemberService {
 
         String nickname = member.getNickname();
         String profileImgUrl = member.getProfileImage();
-        //FavoriteTeam favoriteTeam = member.getFavoriteTeam();
+        FavoriteClub favoriteClub = member.getFavoriteClub();
 
         return MemberResponseDTO.memberProfileDTO.builder()
                 .nickname(nickname)
                 .profileImgUrl(profileImgUrl)
-                //.favoriteTeam(favoriteTeam)
+                .favoriteClub(favoriteClub)
                 .build();
     }
 
@@ -99,7 +98,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
-        List<Diary> diaryList = diaryRepository.findTop9ByMember_IdOrderByDateDesc(memberId);
+        List<Diary> diaryList = diaryRepository.findAllByMember_IdOrderByDateDesc(memberId);
 
         List<MemberResponseDTO.mypageDiaryDTO> mypageDiaryDTOList = diaryList.stream()
                 .map(diary -> MemberConverter.toDiaryDTO(diary))
