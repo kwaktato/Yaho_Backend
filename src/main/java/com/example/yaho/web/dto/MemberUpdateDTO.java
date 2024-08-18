@@ -1,7 +1,6 @@
 package com.example.yaho.web.dto;
 
 import com.example.yaho.domain.enums.FavoriteClub;
-import com.example.yaho.domain.enums.FavoriteTeam;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
