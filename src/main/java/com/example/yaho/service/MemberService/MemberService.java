@@ -39,12 +39,12 @@ public class MemberService {
 
         String nickname = member.getNickname();
         String profileImgUrl = member.getProfileImage();
-        FavoriteTeam favoriteTeam = member.getFavoriteTeam();
+        //FavoriteTeam favoriteTeam = member.getFavoriteTeam();
 
         return MemberResponseDTO.memberProfileDTO.builder()
                 .nickname(nickname)
                 .profileImgUrl(profileImgUrl)
-                .favoriteTeam(favoriteTeam)
+                //.favoriteTeam(favoriteTeam)
                 .build();
     }
 

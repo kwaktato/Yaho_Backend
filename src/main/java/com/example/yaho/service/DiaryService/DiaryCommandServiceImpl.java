@@ -43,15 +43,6 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
 
         Diary newDiary = DiaryConverter.toDiary(request, game, member);
 
-        if (request.getMvpPicture() != null) {
-            String uuid = UUID.randomUUID().toString();
-            Uuid savedUuid = uuidRepository.save(Uuid.builder()
-                    .uuid(uuid).build());
-
-
-            String pictureUrl = s3Manager.uploadFile(s3Manager.generateMvpKeyName(savedUuid), request.getMvpPicture());
-            newDiary.setMvpImageUrl(pictureUrl);
-        }
 
         return diaryRepository.save(newDiary);
     }
