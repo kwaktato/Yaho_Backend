@@ -21,13 +21,13 @@ public class DiaryRequestDTO {
         LocalDate date;
 
         @NotNull
-        String emoticon;
+        String emotionImageUrl;
         // mvp를 사용자가 선택??
         String mvp;
 
         String content;
 
-        MultipartFile mvpPicture;
+//        MultipartFile mvpPicture;
 
         @NotNull
         Integer location;
@@ -59,14 +59,21 @@ public class DiaryRequestDTO {
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         LocalDate date;
         @NotNull
-        String emoticon;
+        String emotionImageUrl;
         // mvp를 사용자가 선택??
         String mvp;
         String content;
 
-        MultipartFile mvpPicture;
+//        MultipartFile mvpPicture;
         @NotNull
         Integer location;
+    }
+
+    @Getter
+    @Setter
+    public static class MvpImageDto{
+
+        MultipartFile mvpPicture;
     }
 
 }

@@ -1,6 +1,8 @@
 package com.example.yaho.web.dto;
 
+import com.example.yaho.domain.enums.FavoriteClub;
 import com.example.yaho.domain.enums.FavoriteTeam;
+import com.example.yaho.domain.enums.Location;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +20,7 @@ public class MemberResponseDTO {
     public static class memberProfileDTO {
         private String nickname;
         private String profileImgUrl;
-        private FavoriteTeam favoriteTeam;
+        private FavoriteClub favoriteClub;
     }
 
     @Builder
@@ -35,9 +37,9 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class mypageDiaryDTO { // 마이 페이지 중 일기 내용 DTO
-        String emotion;
+        String emotionImageUrl;
         String content;
-        String location;
+        Location location;
         LocalDate date;
         String mvp;
     }

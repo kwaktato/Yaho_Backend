@@ -37,7 +37,9 @@ public class AmazonS3Manager{
             log.error("error at AmazonS3Manager uploadFile : {}", (Object) e.getStackTrace());
         }
 
-        return amazonS3.getUrl(amazonConfig.getBucket(), keyName+extention).toString();
+        // extention 제외 : 미리 업로드 된 emotion과 구단 로고 외에 업로드하는 사진엔 .png같은 확장자가 붙어있지 않음
+        // extention을 사용하면 사진이 안열리는 오류 발생
+        return amazonS3.getUrl(amazonConfig.getBucket(), keyName).toString();
     }
 
     public String generateMvpKeyName(Uuid uuid) {

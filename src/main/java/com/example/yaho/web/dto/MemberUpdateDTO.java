@@ -1,5 +1,6 @@
 package com.example.yaho.web.dto;
 
+import com.example.yaho.domain.enums.FavoriteClub;
 import com.example.yaho.domain.enums.FavoriteTeam;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemberUpdateDTO {
 
     private String nickname;
-    private FavoriteTeam favoriteTeam;
+    private FavoriteClub favoriteClub;
 
     @Getter
     @Setter

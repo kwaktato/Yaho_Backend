@@ -26,7 +26,7 @@ public class DiaryConverter {
         return Diary.builder()
                 .member(member)
                 .date(request.getDate())
-                .emotionImageUrl(request.getEmoticon())
+                .emotionImageUrl(request.getEmotionImageUrl())
                 .location(location)
                 .mvp(request.getMvp())  // 수정 가능성
                 .content(request.getContent())
@@ -51,7 +51,7 @@ public class DiaryConverter {
                 .mvpImageUrl(diary.getMvpImageUrl())
                 .location(getLocationCode(diary.getLocation()))
                 .content(diary.getContent())
-                .emoticon(diary.getEmoticon())
+                .emotionImageUrl(diary.getEmotionImageUrl())
                 .build();
     }
 
@@ -66,7 +66,7 @@ public class DiaryConverter {
         LocalDateTime now = LocalDateTime.now();
         diary.setContent(request.getContent());
         diary.setMvp(request.getMvp());
-        diary.setEmoticon(request.getEmoticon());
+        diary.setEmotionImageUrl(request.getEmotionImageUrl());
         diary.setUpdatedAt(now);
         diary.setLocation(getLocationFromRequest(request.getLocation()));
         diary.setDate(request.getDate());
@@ -122,5 +122,21 @@ public class DiaryConverter {
             default:
                 throw new IllegalArgumentException("Unknown location: " + location);
         }
+    }
+
+
+
+    public static DiaryResponseDTO.MvpImageResultDto toImageResultDTO(Diary diary) {
+        return DiaryResponseDTO.MvpImageResultDto.builder()
+                .diaryId(diary.getId())
+                .updatedAt(diary.getUpdatedAt())
+                .build();
+    }
+
+    public static Diary updateMvpImage(Diary diary, String pictureUrl) {
+        diary.setMvpImageUrl(pictureUrl);
+        diary.setUpdatedAt(LocalDateTime.now());
+
+        return diary;
     }
 }
