@@ -11,7 +11,7 @@ import java.util.List;
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
     Diary findByDate(LocalDate date);
 
-    List<Diary> findTop9ByMember_IdOrderByDateDesc(Long memberId);
+    List<Diary> findAllByMember_IdOrderByDateDesc(Long memberId);
 
 //    Optional<Diary> findByDate(LocalDate date);
 //    Optional<Diary> findByGame(Game game);

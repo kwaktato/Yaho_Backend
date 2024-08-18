@@ -1,7 +1,6 @@
 package com.example.yaho.web.dto;
 
 import com.example.yaho.domain.enums.FavoriteClub;
-import com.example.yaho.domain.enums.FavoriteTeam;
 import com.example.yaho.domain.enums.Location;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
