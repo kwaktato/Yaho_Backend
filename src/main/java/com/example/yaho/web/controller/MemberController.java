@@ -1,10 +1,9 @@
 package com.example.yaho.web.controller;
 
 import com.example.yaho.apiPayload.ApiResponse;
-import com.example.yaho.domain.Member;
 import com.example.yaho.repository.MemberRepository;
 import com.example.yaho.service.MemberService.MemberService;
-//import com.example.yaho.utils.SecurityUtil;
+import com.example.yaho.web.dto.MemberRequestDTO;
 import com.example.yaho.web.dto.MemberResponseDTO;
 import com.example.yaho.web.dto.MemberUpdateDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,9 +34,28 @@ public class MemberController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료", content = @Content),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함", content = @Content),
     })
-    public ApiResponse<MemberResponseDTO.memberProfileDTO> getMemberProfile(@PathVariable Long memberId) {
+    public ApiResponse<MemberResponseDTO.memberDTO> getMemberProfile(@PathVariable Long memberId) {
 
-        MemberResponseDTO.memberProfileDTO response = memberService.getMemberProfile(memberId);
+        MemberResponseDTO.memberDTO response = memberService.getMemberProfile(memberId);
+
+        return ApiResponse.onSuccess(response);
+    }
+
+    @PostMapping(value = "/create",
+            consumes = MULTIPART_FORM_DATA,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "멤버 정보 저장 API",
+            description = "로그인 후 사용자의 정보를 받는 API입니다")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!", content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료", content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함", content = @Content),
+    })
+    public ApiResponse<MemberResponseDTO.memberDTO> createMemberProfile(
+            @ModelAttribute MemberRequestDTO.CreateMemberDTO request) {
+
+        MemberResponseDTO.memberDTO response = memberService.createMemberInfo(request);
 
         return ApiResponse.onSuccess(response);
     }
@@ -94,7 +112,7 @@ public class MemberController {
 
     @GetMapping("/mypage/diary/{memberId}")
     @Operation(summary = "멤버의 일기 조회 API",
-            description = "사용자가 작성한 일기들을 9개만 조회하는 API입니다")
+            description = "사용자가 작성한 일기들을 조회하는 API입니다")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!", content = @Content),

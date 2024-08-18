@@ -12,12 +12,14 @@ import com.example.yaho.repository.DiaryRepository;
 import com.example.yaho.repository.MemberRepository;
 
 import com.example.yaho.repository.UuidRepository;
+import com.example.yaho.web.dto.MemberRequestDTO;
 import com.example.yaho.web.dto.MemberResponseDTO;
 import com.example.yaho.web.dto.MemberUpdateDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,19 +34,24 @@ public class MemberService {
     /**
      * 프로필 조회
      */
-    public MemberResponseDTO.memberProfileDTO getMemberProfile(Long memberId) {
+    public MemberResponseDTO.memberDTO getMemberProfile(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
-        String nickname = member.getNickname();
-        String profileImgUrl = member.getProfileImage();
-        FavoriteClub favoriteClub = member.getFavoriteClub();
+        return MemberConverter.toMemberDTO(member);
+    }
 
-        return MemberResponseDTO.memberProfileDTO.builder()
-                .nickname(nickname)
-                .profileImgUrl(profileImgUrl)
-                .favoriteClub(favoriteClub)
-                .build();
+    /**
+     * 멤버 정보 받아와서 저장하기
+     */
+    public MemberResponseDTO.memberDTO createMemberInfo(MemberRequestDTO.CreateMemberDTO request) {
+            Uuid imgUuid = uuidRepository.save(Uuid.builder().uuid(UUID.randomUUID().toString()).build());
+            String imgURL = s3Manager.uploadFile(s3Manager.generateProfileImgName(imgUuid), request.getProfileImg());
+
+            Member member = MemberConverter.toMember(request, imgURL);
+            memberRepository.save(member);
+
+            return MemberConverter.toMemberDTO(member);
     }
 
     /***
@@ -79,10 +86,11 @@ public class MemberService {
         String imgURL = s3Manager.uploadFile(s3Manager.generateProfileImgName(imgUuid), updateImg.getProfileImg());
 
         member.updateProfileImg(imgURL);
+        memberRepository.save(member);
 
         return MemberResponseDTO.ProfileImgDTO.builder()
-                .memberId(memberId)
                 .profileImgURL(imgURL)
+                .updatedAt(member.getUpdatedAt())
                 .build();
     }
 
@@ -94,6 +102,11 @@ public class MemberService {
         return isExist;
     }
 
+    /**
+     * 멤버의 일기 목록 불러오기
+     * @param memberId
+     * @return
+     */
     public MemberResponseDTO.mypageDiaryListDTO getMemberDiaryList(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));

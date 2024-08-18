@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class MemberResponseDTO {
@@ -16,10 +17,21 @@ public class MemberResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class memberDTO {
+        private Long id;
+        private String nickname;
+        private FavoriteClub favoriteClub;
+        private String profileImgURL;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class memberProfileDTO {
         private String nickname;
-        private String profileImgUrl;
         private FavoriteClub favoriteClub;
+        private LocalDateTime updatedAt;
     }
 
     @Builder
@@ -27,8 +39,8 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ProfileImgDTO{
-        private Long memberId;
         private String profileImgURL;
+        private LocalDateTime updatedAt;
     }
 
     @Builder
