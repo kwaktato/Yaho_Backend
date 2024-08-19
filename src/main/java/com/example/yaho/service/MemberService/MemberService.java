@@ -45,13 +45,19 @@ public class MemberService {
      * 멤버 정보 받아와서 저장하기
      */
     public MemberResponseDTO.memberDTO createMemberInfo(MemberRequestDTO.CreateMemberDTO request) {
-            Uuid imgUuid = uuidRepository.save(Uuid.builder().uuid(UUID.randomUUID().toString()).build());
-            String imgURL = s3Manager.uploadFile(s3Manager.generateProfileImgName(imgUuid), request.getProfileImg());
+        Long socialId = request.getSocialId();
 
-            Member member = MemberConverter.toMember(request, imgURL);
-            memberRepository.save(member);
+        Uuid imgUuid = uuidRepository.save(Uuid.builder().uuid(UUID.randomUUID().toString()).build());
+        String imgURL = s3Manager.uploadFile(s3Manager.generateProfileImgName(imgUuid), request.getProfileImg());
 
-            return MemberConverter.toMemberDTO(member);
+        // socialId로 멤버 찾아서
+        Member member = memberRepository.findBySocialId(socialId);
+
+        // 로그인 폼에서 받은 정보 해당하는 멤버에게 저장
+        member.create(request, imgURL);
+        memberRepository.save(member);
+
+        return MemberConverter.toMemberDTO(member);
     }
 
     /***

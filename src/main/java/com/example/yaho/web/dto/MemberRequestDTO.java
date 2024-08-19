@@ -12,7 +12,7 @@ public class MemberRequestDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateMemberDTO {
-        private String accessToken;
+        private Long socialId;
         private String nickname;
         private FavoriteClub favoriteClub;
         private MultipartFile profileImg;

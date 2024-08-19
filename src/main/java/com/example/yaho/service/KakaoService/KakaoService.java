@@ -9,7 +9,9 @@ import com.example.yaho.web.dto.LoginResponseDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
@@ -95,9 +97,11 @@ public class KakaoService {
 
         LoginResponseDto loginResponseDto = new LoginResponseDto();
         loginResponseDto.setLoginSuccess(true);
-        loginResponseDto.setMember(member);
+//        loginResponseDto.setMember(member);
+        loginResponseDto.setSocialId(member.getSocialId());
+        loginResponseDto.setEmail(member.getEmail());
 
-        Member existOwner = memberRepository.findById(member.getId()).orElse(null);
+        Member existOwner = memberRepository.findBySocialId(member.getSocialId());
         try {
             if (existOwner == null) {
                 System.out.println("처음 로그인 하는 회원입니다.");
@@ -106,15 +110,13 @@ public class KakaoService {
             loginResponseDto.setLoginSuccess(true);
 
             return loginResponseDto;
-
-
         } catch (Exception e) {
             loginResponseDto.setLoginSuccess(false);
             return loginResponseDto;
         }
     }
 
-    //사용자 정보 가져오기
+    // 사용자 정보 가져오기
     public Member getKakaoInfo(String kakaoAccessToken) {
         RestTemplate rt = new RestTemplate();
 
@@ -145,33 +147,49 @@ public class KakaoService {
 
         // 회원가입 처리하기
         Long kakaoId = kakaoAccountDto.getId();
-        Member existOwner = memberRepository.findById(kakaoId).orElse(null);
+        Member existOwner = memberRepository.findBySocialId(kakaoId);
         // 처음 로그인이 아닌 경우
         if (existOwner != null) {
             return Member.builder()
-                    .id(kakaoAccountDto.getId())
+                    .socialId(kakaoAccountDto.getId())
                     .email(kakaoAccountDto.getKakaoAccount().getEmail())
-                    .nickname(kakaoAccountDto.getKakaoAccount().getProfile().getNickName())
-                    .profileImage(kakaoAccountDto.getKakaoAccount().getProfile().getProfileImageUrl())
-//                    .fairyGrade(existOwner.getFairyGrade())
-                    .password(existOwner.getPassword())
-                    .createdAt(existOwner.getCreatedAt())
-                    .updatedAt(existOwner.getUpdatedAt())
                     .build();
         }
         // 처음 로그인 하는 경우
         else {
             return Member.builder()
-                    .id(kakaoAccountDto.getId())
+                    .socialId(kakaoAccountDto.getId())
                     .email(kakaoAccountDto.getKakaoAccount().getEmail())
-                    .nickname(kakaoAccountDto.getKakaoAccount().getProfile().getNickName())
-                    .profileImage(kakaoAccountDto.getKakaoAccount().getProfile().getProfileImageUrl())
-//                    .fairyGrade(FairyGrade.BRONZE)
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
                     .build();
         }
     }
 
+    public Long kakaoLogout(String kakaoAccessToken) throws JsonProcessingException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + kakaoAccessToken);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
+        HttpEntity<MultiValueMap<String, String>> kakaoLogoutRequest = new HttpEntity<>(headers);
+
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<String> logoutResponse = rt.exchange(
+                "https://kapi.kakao.com/v1/user/logout",
+                HttpMethod.POST,
+                kakaoLogoutRequest,
+                String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String responseBody = logoutResponse.getBody();
+        JsonNode jsonNode = objectMapper.readTree(responseBody);
+        Long id = jsonNode.get("id").asLong();
+        System.out.println("Logout id = " + id);
+
+        return id;
+    }
+
+    public void delete(Long socialId) {
+        Member member = memberRepository.findBySocialId(socialId);
+        memberRepository.delete(member);
+    }
 }
