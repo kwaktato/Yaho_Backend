@@ -49,31 +49,31 @@ public class DiaryQueryServiceImpl implements DiaryQueryService{
 
         switch (request.getEmotionImage().intValue()) {
             case 1:
-                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/1.png";
+                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/1.svg";
                 break;
             case 2:
-                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/2.png";
+                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/2.svg";
                 break;
             case 3:
-                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/3.png";
+                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/3.svg";
                 break;
             case 4:
-                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/4.png";
+                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/4.svg";
                 break;
             case 5:
-                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/5.png";
+                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/5.svg";
                 break;
             case 6:
-                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/6.png";
+                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/6.svg";
                 break;
             case 7:
-                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/7.png";
+                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/7.svg";
                 break;
             case 8:
-                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/8.png";
+                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/8.svg";
                 break;
             case 9:
-                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/9.png";
+                emotionImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/emotions/9.svg";
                 break;
         }
         return emotionImageUrl;
@@ -88,34 +88,34 @@ public class DiaryQueryServiceImpl implements DiaryQueryService{
 
         switch (member.getFavoriteClub()) {
             case SSG_LANDERS:
-                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/SSG.png";
+                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/SSG_LANDERS.svg";
                 break;
             case LG_TWINS:
-                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/LG.png";
+                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/LG_TWINS.svg";
                 break;
             case KT_WIZ:
-                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/KT.png";
+                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/KT_WIZ.svg";
                 break;
             case NC_DINOS:
-                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/NC.png";
+                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/NC_DINOS.svg";
                 break;
             case DOOSAN_BEARS:
-                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/DOOSAN.png";
+                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/DOOSAN_BEARS.svg";
                 break;
             case KIA_TIGERS:
-                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/KIA.png";
+                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/KIA_TIGERS.svg";
                 break;
             case LOTTE_GIANTS:
-                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/LOTTE.png";
+                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/LOTTE_GIANTS.svg";
                 break;
             case SAMSUNG_LIONS:
-                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/SAMSUNG.png";
+                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/SAMSUNG_LIONS.svg";
                 break;
             case HANWHA_EAGLES:
-                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/HANWHA.png";
+                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/HANWHA_EAGLES.svg";
                 break;
             case KIWOOM_HEROES:
-                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/KIWOOM.png";
+                favoriteClubImageUrl = "https://yahobucket.s3.ap-northeast-2.amazonaws.com/clubs/KIWOOM_HEROES.svg";
                 break;
         }
         return favoriteClubImageUrl;
