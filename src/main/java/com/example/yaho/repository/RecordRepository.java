@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface RecordRepository extends JpaRepository<Record, Long> {
-    @Query("SELECT r FROM Record r WHERE r.memberId = :memberId ORDER BY r.id DESC")
-    Optional<Record> findLatestRecordByMemberId(@Param("memberId") Long memberId);
+    @Query(value = "SELECT r FROM Record r WHERE r.memberId = :memberId ORDER BY r.id DESC")
+    List<Record> findLatestRecordsByMemberId(@Param("memberId") Long memberId);
 }
+

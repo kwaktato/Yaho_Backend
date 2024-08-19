@@ -37,5 +37,6 @@ public class RecordController {
         return latestRecord.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
 }
 
