@@ -11,7 +11,7 @@ import lombok.*;
  public class LoginResponseDto {
     boolean loginSuccess;
     Member member;
-
+    String accessToken;
 
     public void setMember(Member member) {
         this.member = member;
