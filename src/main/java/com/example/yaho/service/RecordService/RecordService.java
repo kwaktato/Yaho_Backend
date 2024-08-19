@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import com.example.yaho.domain.Record;
 import com.example.yaho.repository.RecordRepository;
 
+import java.util.Optional;
+
 @Service
 public class RecordService {
 
@@ -27,6 +29,9 @@ public class RecordService {
         record.setWinningRate(winningRate);
 
         return recordRepository.save(record);
+    }
+    public Optional<Record> getLatestRecordByMemberId(Long memberId) {
+        return recordRepository.findLatestRecordByMemberId(memberId);
     }
 }
 
