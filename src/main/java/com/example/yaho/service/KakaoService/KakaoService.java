@@ -96,6 +96,7 @@ public class KakaoService {
         LoginResponseDto loginResponseDto = new LoginResponseDto();
         loginResponseDto.setLoginSuccess(true);
         loginResponseDto.setMember(member);
+        loginResponseDto.setAccessToken(kakaoAccessToken);
 
         Member existOwner = memberRepository.findById(member.getId()).orElse(null);
         try {
