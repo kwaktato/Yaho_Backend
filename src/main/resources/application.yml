@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://yaho-dev-db.c5kimq6w0czs.ap-northeast-2.rds.amazonaws.com:3306/yaho
-    username: root
-    password: Yyaho29627qlalfdldi!!
+    url: ${AWS_DB_URL}
+    username: ${AWS_DB_USER}
+    password: ${AWS_DB_PASS}
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:
@@ -19,11 +19,11 @@ spring:
         default_batch_fetch_size: 1000
 
 kakao:
-  client_id: 3fe9748de9767b5649437add91e54655
-  redirect_uri: http://localhost:5173/oauth/callback/kakao
-  client_secret: XUrvKHSPQqGQmWqGWYoGcvEhS4rM9IT6
-  token_uri: https://kauth.kakao.com/oauth/token
-  user_info_uri: https://kapi.kakao.com/v2/user/me
+  client_id: ${KAKAO_CLIENT_ID}
+  redirect_uri: ${KAKAO_REDIRECT_URI}
+  client_secret: ${KAKAO_CLIENT_SECRET}
+  token_uri: ${KAKAO_TOKEN_URI}
+  user_info_uri: ${KAKAO_USER_INFO_URI}
 
 cloud:
   aws:
@@ -31,6 +31,7 @@ cloud:
       bucket: yahobucket
       path:
         mvp : mvps
+        profileImg : profileImg
     region:
       static: ap-northeast-2
     stack:

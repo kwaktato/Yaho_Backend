@@ -1,9 +1,11 @@
 package com.example.yaho.domain;
 
+import com.example.yaho.domain.enums.Location;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Getter
@@ -24,12 +26,16 @@ public class Game {
     @Column(name = "team_2", length = 30)
     private String team2;
 
-    @Column(length = 30)
-    private String location;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "location")
+    private Location location;
+
+
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL) // Diary 엔티티에서 game 매핑됨
+    private List<Diary> diaries = new ArrayList<>(); // Diary 리스트
 
     @Column(length = 30)
     private String time;
 
-    @OneToMany(mappedBy = "game") // Diary 엔티티에서 game 매핑됨
-    private List<Diary> diaries; // Diary 리스트
+  
 }

@@ -1,5 +1,6 @@
 package com.example.yaho.web.dto;
 
+import com.example.yaho.domain.enums.Location;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -20,13 +21,42 @@ public class DiaryResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class EmotionResultDTO{
+        String emotionImageUrl;
+        String FavoriteClubImageUrl;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class GetResultDto{
         @NotNull
-        String emoticon;
-        String location;
+        String emotionImageUrl;
+        Integer location;
         // mvp를 사용자가 선택??
         String mvp;
         String content;
-//        String imageUrl;
+        String mvpImageUrl;
     }
+
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ModifyResultDto {
+        Long diaryId;
+        LocalDateTime updatedAt;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MvpImageResultDto{
+        Long diaryId;
+        LocalDateTime updatedAt;
+    }
+
 }

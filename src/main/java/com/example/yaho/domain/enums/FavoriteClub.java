@@ -1,14 +1,14 @@
 package com.example.yaho.domain.enums;
 
-public enum FavoriteTeam {
-    KIA_TIGERS,
-    LG_TWINS,
-    SAMSUNG_LIONS,
-    DOOSAN_BEARS,
+public enum FavoriteClub {
     SSG_LANDERS,
+    LG_TWINS,
     KT_WIZ,
     NC_DINOS,
+    DOOSAN_BEARS,
+    KIA_TIGERS,
     LOTTE_GIANTS,
-    HANHWA_EAGLES,
+    SAMSUNG_LIONS,
+    HANWHA_EAGLES,
     KIWOOM_HEROES
 }

@@ -1,8 +1,23 @@
 package com.example.yaho.service.DiaryService;
 
-import com.example.yaho.domain.Diary;
+
 import com.example.yaho.web.dto.DiaryRequestDTO;
+import com.example.yaho.domain.Diary;
+
+import java.time.LocalDate;
 
 public interface DiaryQueryService {
-    Diary getDiary(DiaryRequestDTO.GetDto request);
+
+
+    String getEmotionImageUrl(DiaryRequestDTO.EmotionDto request);
+
+    String getFavoriteClubImageUrl(Long memberId);
+  
+//    Diary getDiary(DiaryRequestDTO.GetDto request);
+
+    Diary getDiary(Long memberId, LocalDate date);
+
+    Diary modifyDiary(Long memberId, DiaryRequestDTO.ModifyDto request);
+
+    Diary updateMvpImg(DiaryRequestDTO.MvpImageDto image, Long memberId, LocalDate date, Integer location);
 }
