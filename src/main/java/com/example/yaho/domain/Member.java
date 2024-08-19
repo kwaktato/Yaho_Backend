@@ -1,7 +1,6 @@
 package com.example.yaho.domain;
 
 import com.example.yaho.domain.common.BaseEntity;
-import com.example.yaho.domain.enums.FairyGrade;
 import com.example.yaho.domain.enums.FavoriteClub;
 import com.example.yaho.web.dto.MemberUpdateDTO;
 import jakarta.persistence.*;
@@ -10,9 +9,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 

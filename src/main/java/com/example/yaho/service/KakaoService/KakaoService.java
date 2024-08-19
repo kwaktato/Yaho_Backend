@@ -1,7 +1,6 @@
 package com.example.yaho.service.KakaoService;
 
 import com.example.yaho.domain.Member;
-import com.example.yaho.domain.enums.FairyGrade;
 import com.example.yaho.repository.MemberRepository;
 import com.example.yaho.web.dto.KakaoAccountDto;
 import com.example.yaho.web.dto.KakaoTokenDto;
@@ -12,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -191,6 +189,7 @@ public class KakaoService {
                 }
             }
 
+            //카카오 회원탈퇴
     public void kakaoUnlink(String kakaoAccessToken) {
         RestTemplate rt = new RestTemplate();
 
