@@ -24,21 +24,14 @@ import java.util.List;
 public class Member extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(length = 50)
-    private String email;
 
     @Column(length = 15)
     private String nickname;
 
     @Column(name = "profile_image", length = 255)
     private String profileImage;
-
-    @Column(name = "password", length = 255)
-    private String password;
-
 
     @Enumerated(EnumType.STRING)
     private FavoriteClub favoriteClub;

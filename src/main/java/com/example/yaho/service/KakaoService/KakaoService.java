@@ -144,21 +144,12 @@ public class KakaoService {
         Member existOwner = memberRepository.findById(kakaoId).orElse(null);
         // 처음 로그인이 아닌 경우
         if (existOwner != null) {
-            return Member.builder()
-                    .id(kakaoAccountDto.getId())
-                    .email(kakaoAccountDto.getKakaoAccount().getEmail())
-                    .nickname(kakaoAccountDto.getKakaoAccount().getProfile().getNickName())
-                    .profileImage(kakaoAccountDto.getKakaoAccount().getProfile().getProfileImageUrl())
-                    .password(existOwner.getPassword())
-                    .createdAt(existOwner.getCreatedAt())
-                    .updatedAt(existOwner.getUpdatedAt())
-                    .build();
+            return existOwner;
         }
         // 처음 로그인 하는 경우
         else {
             return Member.builder()
                     .id(kakaoAccountDto.getId())
-                    .email(kakaoAccountDto.getKakaoAccount().getEmail())
                     .nickname(kakaoAccountDto.getKakaoAccount().getProfile().getNickName())
                     .profileImage(kakaoAccountDto.getKakaoAccount().getProfile().getProfileImageUrl())
                     .createdAt(LocalDateTime.now())
