@@ -1,7 +1,6 @@
 package com.example.yaho.domain;
 
 import com.example.yaho.domain.common.BaseEntity;
-import com.example.yaho.domain.enums.FairyGrade;
 import com.example.yaho.domain.enums.FavoriteClub;
 import com.example.yaho.web.dto.MemberUpdateDTO;
 import jakarta.persistence.*;
@@ -10,9 +9,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -27,21 +24,14 @@ import java.util.List;
 public class Member extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(length = 50)
-    private String email;
 
     @Column(length = 15)
     private String nickname;
 
     @Column(name = "profile_image", length = 255)
     private String profileImage;
-
-    @Column(name = "password", length = 255)
-    private String password;
-
 
     @Enumerated(EnumType.STRING)
     private FavoriteClub favoriteClub;

@@ -1,7 +1,6 @@
 package com.example.yaho.service.KakaoService;
 
 import com.example.yaho.domain.Member;
-import com.example.yaho.domain.enums.FairyGrade;
 import com.example.yaho.repository.MemberRepository;
 import com.example.yaho.web.dto.KakaoAccountDto;
 import com.example.yaho.web.dto.KakaoTokenDto;
@@ -12,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -146,53 +144,67 @@ public class KakaoService {
         Member existOwner = memberRepository.findById(kakaoId).orElse(null);
         // 처음 로그인이 아닌 경우
         if (existOwner != null) {
-            return Member.builder()
-                    .id(kakaoAccountDto.getId())
-                    .email(kakaoAccountDto.getKakaoAccount().getEmail())
-                    .nickname(kakaoAccountDto.getKakaoAccount().getProfile().getNickName())
-                    .profileImage(kakaoAccountDto.getKakaoAccount().getProfile().getProfileImageUrl())
-//                    .fairyGrade(existOwner.getFairyGrade())
-                    .password(existOwner.getPassword())
-                    .createdAt(existOwner.getCreatedAt())
-                    .updatedAt(existOwner.getUpdatedAt())
-                    .build();
+            return existOwner;
         }
         // 처음 로그인 하는 경우
         else {
             return Member.builder()
                     .id(kakaoAccountDto.getId())
-                    .email(kakaoAccountDto.getKakaoAccount().getEmail())
                     .nickname(kakaoAccountDto.getKakaoAccount().getProfile().getNickName())
                     .profileImage(kakaoAccountDto.getKakaoAccount().getProfile().getProfileImageUrl())
-//                    .fairyGrade(FairyGrade.BRONZE)
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
                     .build();
         }
     }
+            // 카카오 로그아웃
+            public void kakaoLogout(String kakaoAccessToken) {
+                RestTemplate rt = new RestTemplate();
 
-    // 카카오 로그아웃
-    public void kakaoLogout(String kakaoAccessToken) {
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", "Bearer " + kakaoAccessToken);
+
+                HttpEntity<MultiValueMap<String, String>> logoutRequest = new HttpEntity<>(headers);
+
+                // POST 방식으로 카카오 로그아웃 API 호출
+                ResponseEntity<String> response = rt.exchange(
+                        "https://kapi.kakao.com/v1/user/logout",
+                        HttpMethod.POST,
+                        logoutRequest,
+                        String.class
+                );
+
+                if (response.getStatusCode() == HttpStatus.OK) {
+                    log.info("카카오 로그아웃 성공");
+                } else {
+                    log.error("카카오 로그아웃 실패: " + response.getBody());
+                }
+            }
+
+            //카카오 회원탈퇴
+    public void kakaoUnlink(String kakaoAccessToken) {
         RestTemplate rt = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + kakaoAccessToken);
 
-        HttpEntity<MultiValueMap<String, String>> logoutRequest = new HttpEntity<>(headers);
+        HttpEntity<MultiValueMap<String, String>> unlinkRequest = new HttpEntity<>(headers);
 
         // POST 방식으로 카카오 로그아웃 API 호출
         ResponseEntity<String> response = rt.exchange(
-                "https://kapi.kakao.com/v1/user/logout",
+                "https://kapi.kakao.com/v1/user/unlink",
                 HttpMethod.POST,
-                logoutRequest,
+                unlinkRequest,
                 String.class
         );
 
         if (response.getStatusCode() == HttpStatus.OK) {
-            log.info("카카오 로그아웃 성공");
+            Member member = getKakaoInfo(kakaoAccessToken);
+            memberRepository.delete(member);
+            log.info("카카오 회원탈퇴 성공");
         } else {
-            log.error("카카오 로그아웃 실패: " + response.getBody());
+            log.error("카카오 회원탈퇴 실패: " + response.getBody());
         }
     }
 
-}
+        }
