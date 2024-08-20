@@ -52,6 +52,9 @@ public class KakaoLoginController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "인가 코드가 만료되었습니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "인가 코드가 유효하지 않습니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
+    @Parameters({
+            @Parameter(name = "accessToken", description = "엑세스 토큰입니다."),
+    })
     @GetMapping("/unlink/kakao")
     public ApiResponse<String> kakaoUnlink(@RequestParam("accessToken") String accessToken) {
 
