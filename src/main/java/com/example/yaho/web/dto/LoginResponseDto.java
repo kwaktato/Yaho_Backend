@@ -12,5 +12,5 @@ import lombok.*;
  public class LoginResponseDto {
     boolean loginSuccess;
     Long socialId;
-    String email;
+    String accessToken;
 }

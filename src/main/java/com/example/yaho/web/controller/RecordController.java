@@ -13,6 +13,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/records")
 @Api(value = "Record Management", tags = {"Record"})
@@ -28,5 +30,13 @@ public class RecordController {
                                @RequestParam String winningGames) {
         return recordService.createRecord(memberId, totalGames, winningGames);
     }
+    @GetMapping("/latest/{memberId}")
+    @ApiOperation(value = "Get the latest record by member ID", response = Record.class)
+    public ResponseEntity<Record> getLatestRecordByMemberId(@PathVariable Long memberId) {
+        Optional<Record> latestRecord = recordService.getLatestRecordByMemberId(memberId);
+        return latestRecord.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 }
 
