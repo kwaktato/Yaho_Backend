@@ -8,7 +8,9 @@ import com.example.yaho.web.dto.LoginResponseDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -90,10 +92,10 @@ public class KakaoService {
 
         LoginResponseDto loginResponseDto = new LoginResponseDto();
         loginResponseDto.setLoginSuccess(true);
-        loginResponseDto.setMember(member);
+        loginResponseDto.setSocialId(member.getSocialId());
         loginResponseDto.setAccessToken(kakaoAccessToken);
 
-        Member existOwner = memberRepository.findById(member.getId()).orElse(null);
+        Member existOwner = memberRepository.findBySocialId(member.getSocialId());
         try {
             if (existOwner == null) {
                 System.out.println("처음 로그인 하는 회원입니다.");
@@ -102,15 +104,13 @@ public class KakaoService {
             loginResponseDto.setLoginSuccess(true);
 
             return loginResponseDto;
-
-
         } catch (Exception e) {
             loginResponseDto.setLoginSuccess(false);
             return loginResponseDto;
         }
     }
 
-    //사용자 정보 가져오기
+    // 사용자 정보 가져오기
     public Member getKakaoInfo(String kakaoAccessToken) {
         RestTemplate rt = new RestTemplate();
 
@@ -141,7 +141,7 @@ public class KakaoService {
 
         // 회원가입 처리하기
         Long kakaoId = kakaoAccountDto.getId();
-        Member existOwner = memberRepository.findById(kakaoId).orElse(null);
+        Member existOwner = memberRepository.findBySocialId(kakaoId);
         // 처음 로그인이 아닌 경우
         if (existOwner != null) {
             return existOwner;
@@ -149,14 +149,11 @@ public class KakaoService {
         // 처음 로그인 하는 경우
         else {
             return Member.builder()
-                    .id(kakaoAccountDto.getId())
-                    .nickname(kakaoAccountDto.getKakaoAccount().getProfile().getNickName())
-                    .profileImage(kakaoAccountDto.getKakaoAccount().getProfile().getProfileImageUrl())
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
+                    .socialId(kakaoAccountDto.getId())
                     .build();
         }
     }
+  
     // 카카오 로그아웃
     public void kakaoLogout(String kakaoAccessToken) {
         RestTemplate rt = new RestTemplate();
@@ -206,5 +203,4 @@ public class KakaoService {
             log.error("카카오 회원탈퇴 실패: " + response.getBody());
         }
     }
-
 }

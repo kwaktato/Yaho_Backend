@@ -42,6 +42,7 @@ public class KakaoLoginController {
 
         String accessToken = kakaoService.getKakaoAccessToken(code).getAccess_token();
         LoginResponseDto loginResponseDto = kakaoService.kakaoLogin(accessToken);
+        
         return ApiResponse.onSuccess(loginResponseDto);
     }
 
@@ -60,14 +61,7 @@ public class KakaoLoginController {
 
         // 카카오 로그아웃 서비스 호출
         kakaoService.kakaoUnlink(accessToken);
+        
         return ApiResponse.onSuccess("카카오 회원탈퇴 성공");
     }
-
-
-
-
 }
-
-
-
-
