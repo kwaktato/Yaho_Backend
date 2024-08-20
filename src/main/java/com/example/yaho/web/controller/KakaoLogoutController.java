@@ -3,17 +3,12 @@ package com.example.yaho.web.controller;
 import com.example.yaho.apiPayload.ApiResponse;
 import com.example.yaho.service.KakaoService.KakaoService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -40,6 +35,6 @@ public class KakaoLogoutController {
 
         // 카카오 로그아웃 서비스 호출
         kakaoService.kakaoLogout(accessToken);
-        return ApiResponse.onSuccess("카카오 로그아웃 성공");
+        return ApiResponse.onSuccess("카카오 회원탈퇴 성공");
     }
 }
