@@ -163,33 +163,4 @@ public class KakaoService {
                     .build();
         }
     }
-
-    public Long kakaoLogout(String kakaoAccessToken) throws JsonProcessingException {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + kakaoAccessToken);
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        HttpEntity<MultiValueMap<String, String>> kakaoLogoutRequest = new HttpEntity<>(headers);
-
-        RestTemplate rt = new RestTemplate();
-        ResponseEntity<String> logoutResponse = rt.exchange(
-                "https://kapi.kakao.com/v1/user/logout",
-                HttpMethod.POST,
-                kakaoLogoutRequest,
-                String.class
-        );
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String responseBody = logoutResponse.getBody();
-        JsonNode jsonNode = objectMapper.readTree(responseBody);
-        Long id = jsonNode.get("id").asLong();
-        System.out.println("Logout id = " + id);
-
-        return id;
-    }
-
-    public void delete(Long socialId) {
-        Member member = memberRepository.findBySocialId(socialId);
-        memberRepository.delete(member);
-    }
 }
