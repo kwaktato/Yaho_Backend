@@ -153,32 +153,32 @@ public class KakaoService {
                     .build();
         }
     }
+  
+    // 카카오 로그아웃
+    public void kakaoLogout(String kakaoAccessToken) {
+        RestTemplate rt = new RestTemplate();
 
-            // 카카오 로그아웃
-            public void kakaoLogout(String kakaoAccessToken) {
-                RestTemplate rt = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + kakaoAccessToken);
 
-                HttpHeaders headers = new HttpHeaders();
-                headers.add("Authorization", "Bearer " + kakaoAccessToken);
+        HttpEntity<MultiValueMap<String, String>> logoutRequest = new HttpEntity<>(headers);
 
-                HttpEntity<MultiValueMap<String, String>> logoutRequest = new HttpEntity<>(headers);
+        // POST 방식으로 카카오 로그아웃 API 호출
+        ResponseEntity<String> response = rt.exchange(
+                "https://kapi.kakao.com/v1/user/logout",
+                HttpMethod.POST,
+                logoutRequest,
+                String.class
+        );
 
-                // POST 방식으로 카카오 로그아웃 API 호출
-                ResponseEntity<String> response = rt.exchange(
-                        "https://kapi.kakao.com/v1/user/logout",
-                        HttpMethod.POST,
-                        logoutRequest,
-                        String.class
-                );
+        if (response.getStatusCode() == HttpStatus.OK) {
+            log.info("카카오 로그아웃 성공");
+        } else {
+            log.error("카카오 로그아웃 실패: " + response.getBody());
+        }
+    }
 
-                if (response.getStatusCode() == HttpStatus.OK) {
-                    log.info("카카오 로그아웃 성공");
-                } else {
-                    log.error("카카오 로그아웃 실패: " + response.getBody());
-                }
-            }
-
-            //카카오 회원탈퇴
+    //카카오 회원탈퇴
     public void kakaoUnlink(String kakaoAccessToken) {
         RestTemplate rt = new RestTemplate();
 
