@@ -3,6 +3,8 @@ package com.example.yaho.web.controller;
 import com.example.yaho.apiPayload.ApiResponse;
 import com.example.yaho.service.KakaoService.KakaoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -35,6 +37,6 @@ public class KakaoLogoutController {
 
         // 카카오 로그아웃 서비스 호출
         kakaoService.kakaoLogout(accessToken);
-        return ApiResponse.onSuccess("카카오 회원탈퇴 성공");
+        return ApiResponse.onSuccess("카카오 로그아웃 성공");
     }
 }
