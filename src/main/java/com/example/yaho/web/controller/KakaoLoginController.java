@@ -43,22 +43,22 @@ public class KakaoLoginController {
         return ApiResponse.onSuccess(loginResponseDto);
     }
 
-    @Operation(summary = "카카오 회원탈퇴 API", description = "토큰을 받아 카카오 회원탈퇴 및 서비스 회원탈퇴를 처리")
+    @Operation(summary = "카카오 연결 해제 API", description = "토큰을 받아 카카오 연결 해제를 처리")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "인가 코드를 주세요!", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "인가 코드가 만료되었습니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "인가 코드가 유효하지 않습니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰이 만료되었습니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰이 유효하지 않습니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
+
+
     @PostMapping("/kakao/unlink")
-    public ApiResponse<Void> unlinkAndDeleteKakaoAccount(@RequestHeader("Authorization") String accessToken, @RequestParam Long socialId) {
-        try {
-            log.info("카카오 회원탈퇴 요청 - socialId: {}", socialId);
-            kakaoService.kakaoUnlinkAndDeleteMember(accessToken, socialId);
-            return ApiResponse.onSuccess(null);
-        } catch (Exception e) {
-            log.error("카카오 회원탈퇴 처리 중 오류 발생", e);
-            return ApiResponse.onFailure("AUTH006", "회원탈퇴 처리 중 오류가 발생했습니다.", null);
+    public String unlinkKakao(@RequestHeader String accessToken) {
+        if (kakaoService.isAccessTokenValid(accessToken)) {
+            kakaoService.unlinkKakao(accessToken);
+            return "Kakao account unlinked successfully.";
+        } else {
+            return "Invalid Access Token.";
         }
     }
 }
