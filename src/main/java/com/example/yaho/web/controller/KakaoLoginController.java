@@ -14,7 +14,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -39,48 +42,26 @@ public class KakaoLoginController {
 
         String accessToken = kakaoService.getKakaoAccessToken(code).getAccess_token();
         LoginResponseDto loginResponseDto = kakaoService.kakaoLogin(accessToken);
+        
         return ApiResponse.onSuccess(loginResponseDto);
     }
 
-    @Operation(summary = "카카오 연결 끊기 API", description = "토큰을 받아 카카오 연결 끊기 처리")
+    @Operation(summary = "카카오 회원탈퇴 API", description = "토큰을 받아 카카오 회원탈퇴 처리")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "인가 코드를 주세요!",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "인가 코드가 만료되었습니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "인가 코드가 유효하지 않습니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    /*@Parameters({
+    @Parameters({
             @Parameter(name = "accessToken", description = "엑세스 토큰입니다."),
-    })*/
-    /*@GetMapping("/unlink/kakao")
+    })
+    @GetMapping("/unlink/kakao")
     public ApiResponse<String> kakaoUnlink(@RequestParam("accessToken") String accessToken) {
 
         // 카카오 로그아웃 서비스 호출
         kakaoService.kakaoUnlink(accessToken);
+        
         return ApiResponse.onSuccess("카카오 회원탈퇴 성공");
-    }*/
-    @PostMapping("/kakao/unlink")
-    public ApiResponse<Void> unlinkKakaoAccount(@RequestHeader("Authorization") String accessToken) {
-        kakaoService.kakaoUnlink(accessToken);
-        return ApiResponse.onSuccess(null);
     }
-
-    @Operation(summary = "야호 회원탈퇴 API", description = "토큰을 받아 회원탈퇴 처리")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "인가 코드를 주세요!",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "인가 코드가 만료되었습니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "인가 코드가 유효하지 않습니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-    })
-    @DeleteMapping("/kakao/delete")
-    public ApiResponse<Void> unlinkAndDeleteKakaoAccount(@RequestHeader("Authorization") String accessToken, @RequestParam Long memberId) {
-        kakaoService.kakaoUnlinkAndDeleteMember(accessToken, memberId);
-        return ApiResponse.onSuccess(null);
-    }
-
-
 }
-
-
-
-
