@@ -65,6 +65,8 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
                 return Location.JAMSIL_BASEBALL_STADIUM;
             case 8:
                 return Location.CHANGWON_NC_PARK;
+            case 9:
+                return Location.DAEJEON_HANWHA_EAGLES_PARK;
             default:
                 throw new IllegalArgumentException("Invalid location code: " + locationCode);
         }
