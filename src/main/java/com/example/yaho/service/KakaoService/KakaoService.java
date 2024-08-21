@@ -153,7 +153,7 @@ public class KakaoService {
                     .build();
         }
     }
-  
+
     // 카카오 로그아웃
     public void kakaoLogout(String kakaoAccessToken) {
         RestTemplate rt = new RestTemplate();
