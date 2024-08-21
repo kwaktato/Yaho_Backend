@@ -59,7 +59,7 @@ public class DiaryController {
     })
     @Parameters({
             @Parameter(name = "memberId", description = "사용자의 아이디, path variable 입니다!"),
-            @Parameter(name = "location", description = "야구 경기장 이름. Figma 기준 순서대로 1~8이며, 1이 고척 스카이돔, 8이 창원 NC파크입니다.")
+            @Parameter(name = "location", description = "야구 경기장 이름. Figma 기준 순서대로 1~8이며, 1이 고척 스카이돔, 8이 창원 NC파크, 9는 한화 이글스 파크입니다.")
     })
     public ApiResponse<DiaryResponseDTO.WriteResultDto> write(
             @PathVariable(name = "memberId") @NotNull Long memberId,
@@ -122,7 +122,7 @@ public class DiaryController {
     })
     @Parameters({
             @Parameter(name = "memberId", description = "사용자의 아이디, path variable 입니다!"),
-            @Parameter(name = "location", description = "야구 경기장 이름. Figma 기준 순서대로 1~8이며, 1이 고척 스카이돔, 8이 창원 NC파크입니다.")
+            @Parameter(name = "location", description = "야구 경기장 이름. Figma 기준 순서대로 1~8이며, 1이 고척 스카이돔, 8이 창원 NC파크, 9는 한화 이글스 파크입니다.")
     })
     public ApiResponse<DiaryResponseDTO.ModifyResultDto> modify(
             @PathVariable(name = "memberId") @NotNull Long memberId,
@@ -145,7 +145,7 @@ public class DiaryController {
     })
     @Parameters({
             @Parameter(name = "memberId", description = "사용자의 아이디, path variable 입니다!"),
-            @Parameter(name = "location", description = "야구 경기장 이름. figma 기준 순서대로 1~8이며, 1이 고척 스카이돔, 8이 창원 NC파크입니다."),
+            @Parameter(name = "location", description = "야구 경기장 이름. figma 기준 순서대로 1~8이며, 1이 고척 스카이돔, 8이 창원 NC파크, 9는 한화 이글스 파크입니다."),
             @Parameter(name = "date", description = "야구 경기 날짜")
     })
     public ApiResponse<DiaryResponseDTO.MvpImageResultDto> updateMvpImage(

@@ -92,6 +92,8 @@ public class DiaryConverter {
                 return Location.JAMSIL_BASEBALL_STADIUM;
             case 8:
                 return Location.CHANGWON_NC_PARK;
+            case 9:
+                return Location.DAEJEON_HANWHA_EAGLES_PARK;
             default:
                 throw new IllegalArgumentException("Invalid location code: " + locationCode);
         }
@@ -119,6 +121,8 @@ public class DiaryConverter {
                 return 7;
             case CHANGWON_NC_PARK:
                 return 8;
+            case DAEJEON_HANWHA_EAGLES_PARK:
+                return 9;
             default:
                 throw new IllegalArgumentException("Unknown location: " + location);
         }
