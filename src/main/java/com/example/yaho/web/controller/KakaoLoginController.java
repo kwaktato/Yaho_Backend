@@ -14,10 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -46,22 +43,22 @@ public class KakaoLoginController {
         return ApiResponse.onSuccess(loginResponseDto);
     }
 
-    @Operation(summary = "카카오 회원탈퇴 API", description = "토큰을 받아 카카오 회원탈퇴 처리")
+    @Operation(summary = "카카오 회원탈퇴 API", description = "토큰을 받아 카카오 회원탈퇴 및 서비스 회원탈퇴를 처리")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "인가 코드를 주세요!",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "인가 코드가 만료되었습니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "인가 코드가 유효하지 않습니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "인가 코드를 주세요!", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "인가 코드가 만료되었습니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "인가 코드가 유효하지 않습니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    @Parameters({
-            @Parameter(name = "accessToken", description = "엑세스 토큰입니다."),
-    })
-    @GetMapping("/unlink/kakao")
-    public ApiResponse<String> kakaoUnlink(@RequestParam("accessToken") String accessToken) {
-
-        // 카카오 로그아웃 서비스 호출
-        kakaoService.kakaoUnlink(accessToken);
-        
-        return ApiResponse.onSuccess("카카오 회원탈퇴 성공");
+    @PostMapping("/kakao/unlink")
+    public ApiResponse<Void> unlinkAndDeleteKakaoAccount(@RequestHeader("Authorization") String accessToken, @RequestParam Long socialId) {
+        try {
+            log.info("카카오 회원탈퇴 요청 - socialId: {}", socialId);
+            kakaoService.kakaoUnlinkAndDeleteMember(accessToken, socialId);
+            return ApiResponse.onSuccess(null);
+        } catch (Exception e) {
+            log.error("카카오 회원탈퇴 처리 중 오류 발생", e);
+            return ApiResponse.onFailure("AUTH006", "회원탈퇴 처리 중 오류가 발생했습니다.", null);
+        }
     }
 }

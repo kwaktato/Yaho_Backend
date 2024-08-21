@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
@@ -44,6 +45,9 @@ public class KakaoService {
 
     @Value("${kakao.user_info_uri}")
     private String KAKAO_USER_INFO_URI;
+
+    @Value("${KAKAO_UNLINK_CALLBACK_URI}")
+    private String KAKAO_UNLINK_CALLBACK_URI;
 
     //카카오 토근 가져오기
     @Transactional
@@ -178,29 +182,147 @@ public class KakaoService {
         }
     }
 
-    //카카오 회원탈퇴
-    public void kakaoUnlink(String kakaoAccessToken) {
+    // 카카오 회원 탈퇴 및 서비스 회원 탈퇴
+    @Transactional
+    public void kakaoUnlinkAndDeleteMember(String kakaoAccessToken, Long socialId) {
+        log.info("kakaoUnlinkAndDeleteMember 메서드 호출됨 - socialId: {}, Access Token: {}", socialId, kakaoAccessToken);
+
+        // 1. 카카오 계정 연결 해제 요청
+        try {
+            unlinkKakaoAccount(kakaoAccessToken);  // 연결 해제 요청 메서드 호출
+            log.info("카카오 계정 연결 해제 성공 - socialId: {}", socialId);
+        } catch (Exception e) {
+            log.error("카카오 계정 연결 해제 실패 - socialId: {}, 이유: {}", socialId, e.getMessage());
+            throw new RuntimeException("카카오 계정 연결 해제에 실패했습니다.");
+        }
+
+        // 2. 회원 정보 삭제
+        try {
+            deleteMember(socialId);  // DB에서 해당 사용자의 회원 정보 삭제
+            log.info("회원 정보 삭제 성공 - socialId: {}", socialId);
+        } catch (Exception e) {
+            log.error("회원 정보 삭제 실패 - socialId: {}, 이유: {}", socialId, e.getMessage());
+            throw new RuntimeException("회원 정보 삭제에 실패했습니다.");
+        }
+
+        // 3. 콜백 URL 호출 (optional, if needed)
+        try {
+            notifyFrontendCallback(socialId);  // 콜백 URL 호출 메서드
+            log.info("콜백 URL 호출 성공 - socialId: {}", socialId);
+        } catch (Exception e) {
+            log.error("콜백 URL 호출 실패 - socialId: {}, 이유: {}", socialId, e.getMessage());
+            // 콜백 실패는 오류로 처리하지 않고 로깅만 합니다.
+        }
+    }
+    public void unlinkKakaoAccount(String kakaoAccessToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + kakaoAccessToken);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        HttpEntity<MultiValueMap<String, String>> unlinkRequest = new HttpEntity<>(headers);
+
+        try {
+            ResponseEntity<String> unlinkResponse = new RestTemplate().exchange(
+                    "https://kapi.kakao.com/v1/user/unlink",
+                    HttpMethod.POST,
+                    unlinkRequest,
+                    String.class
+            );
+
+            if (unlinkResponse.getStatusCode() != HttpStatus.OK) {
+                throw new RuntimeException("카카오 계정 연결 해제 실패: 응답 코드 - " + unlinkResponse.getStatusCode());
+            }
+        } catch (HttpClientErrorException e) {
+            throw new RuntimeException("카카오 API 호출 중 오류 발생: " + e.getResponseBodyAsString());
+        }
+    }
+    @Transactional
+    public void deleteMember(Long socialId) {
+        if (memberRepository.existsBySocialId(socialId)) {
+            memberRepository.deleteBySocialId(socialId);
+        } else {
+            throw new RuntimeException("회원 정보가 존재하지 않습니다.");
+        }
+    }
+    public void notifyFrontendCallback(Long socialId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("user_id", socialId.toString());
+
+        HttpEntity<MultiValueMap<String, String>> callbackRequest = new HttpEntity<>(params, headers);
+
+        try {
+            String callbackUrl = System.getenv("KAKAO_UNLINK_CALLBACK_URI");  // 환경 변수에서 콜백 URL 가져오기
+
+            ResponseEntity<String> callbackResponse = new RestTemplate().exchange(
+                    callbackUrl,
+                    HttpMethod.POST,
+                    callbackRequest,
+                    String.class
+            );
+
+            if (callbackResponse.getStatusCode() != HttpStatus.OK) {
+                throw new RuntimeException("콜백 호출 실패: 응답 코드 - " + callbackResponse.getStatusCode());
+            }
+        } catch (HttpClientErrorException e) {
+            throw new RuntimeException("콜백 호출 중 오류 발생: " + e.getResponseBodyAsString());
+        }
+    }
+    /*@Transactional
+    public void kakaoUnlinkAndDeleteMember(String kakaoAccessToken, Long socialId) {
+        log.info("kakaoUnlinkAndDeleteMember 메서드 호출됨 - socialId: {}, Access Token: {}", socialId, kakaoAccessToken);
+
+        if (kakaoAccessToken == null || kakaoAccessToken.isEmpty()) {
+            throw new RuntimeException("유효하지 않은 Access Token입니다.");
+        }
+
         RestTemplate rt = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + kakaoAccessToken);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
-        HttpEntity<MultiValueMap<String, String>> unlinkRequest = new HttpEntity<>(headers);
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("callback_url", KAKAO_UNLINK_CALLBACK_URI);
 
-        // POST 방식으로 카카오 로그아웃 API 호출
-        ResponseEntity<String> response = rt.exchange(
-                "https://kapi.kakao.com/v1/user/unlink",
-                HttpMethod.POST,
-                unlinkRequest,
-                String.class
-        );
+        HttpEntity<MultiValueMap<String, String>> unlinkRequest = new HttpEntity<>(params, headers);
 
-        if (response.getStatusCode() == HttpStatus.OK) {
-            Member member = getKakaoInfo(kakaoAccessToken);
-            memberRepository.delete(member);
-            log.info("카카오 회원탈퇴 성공");
-        } else {
-            log.error("카카오 회원탈퇴 실패: " + response.getBody());
+
+        try {
+            ResponseEntity<String> unlinkResponse = rt.exchange(
+                    "https://kapi.kakao.com/v1/user/unlink",
+                    HttpMethod.POST,
+                    unlinkRequest,
+                    String.class
+            );
+
+            log.info("카카오 계정 연결 해제 응답 상태: {}", unlinkResponse.getStatusCode());
+
+            if (unlinkResponse.getStatusCode() == HttpStatus.OK) {
+                log.info("카카오 계정 연결 해제 성공");
+            } else {
+                log.error("카카오 계정 연결 해제 실패: 응답 코드: {}, 응답 내용: {}", unlinkResponse.getStatusCode(), unlinkResponse.getBody());
+                throw new RuntimeException("카카오 계정 연결 해제에 실패했습니다.");
+            }
+        } catch (HttpClientErrorException e) {
+            log.error("카카오 API 호출 중 오류 발생 - 상태 코드: {}, 응답 내용: {}", e.getStatusCode(), e.getResponseBodyAsString());
+            throw e;
         }
-    }
+
+        // 데이터베이스에서 회원 정보 삭제
+        try {
+            if (memberRepository.existsBySocialId(socialId)) {
+                memberRepository.deleteBySocialId(socialId);
+                log.info("회원 ID {} 의 정보가 성공적으로 삭제되었습니다.", socialId);
+            } else {
+                log.warn("회원 ID {} 가 데이터베이스에 존재하지 않습니다.", socialId);
+                throw new RuntimeException("회원 정보가 존재하지 않습니다.");
+            }
+        } catch (Exception e) {
+            log.error("회원 정보 삭제 중 오류 발생", e);
+            throw new RuntimeException("회원 정보 삭제 중 오류가 발생했습니다.", e);
+        }
+    }*/
 }
