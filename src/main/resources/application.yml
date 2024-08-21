@@ -24,6 +24,7 @@ kakao:
   client_secret: ${KAKAO_CLIENT_SECRET}
   token_uri: ${KAKAO_TOKEN_URI}
   user_info_uri: ${KAKAO_USER_INFO_URI}
+  unlink_callback_uri: ${KAKAO_UNLINK_CALLBACK_URI}
 
 cloud:
   aws:
