@@ -11,10 +11,4 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     boolean existsByNickname(String nickname);
 
-    // SocialId로 존재 여부 확인
-    boolean existsBySocialId(Long socialId);
-
-    // SocialId로 회원 정보 삭제
-    void deleteBySocialId(Long socialId);
-
 }
