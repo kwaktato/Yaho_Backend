@@ -51,8 +51,8 @@ public class KakaoLoginController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰이 유효하지 않습니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
 
-
-    @PostMapping("/kakao/unlink")
+    //@PostMapping("/kakao/unlink")
+    @ GetMapping("/kakao/unlink")
     public String unlinkKakao(@RequestHeader String accessToken) {
         if (kakaoService.isAccessTokenValid(accessToken)) {
             kakaoService.unlinkKakao(accessToken);
